@@ -7,7 +7,7 @@
 #include "Board.h"
 
 
-class hinter {
+class Hinter {
 public:
     void provideHint(Board board, Board solution);
 };

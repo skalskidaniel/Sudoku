@@ -9,13 +9,20 @@
 
 
 class ErrorTracker {
-public:
-    int currentError;
-    bool isGameOver;
-    bool validateMove(Board board, Board solution, char mode);
-    ErrorTracker(int maxErrors);
 private:
     int maxErrors;
+
+public:
+    ErrorTracker(int maxErrors);
+
+    int currentError;
+
+    bool isGameOver;
+
+    bool validateMove(Board board, Board solution, char mode);
+
+
+
 };
 
 

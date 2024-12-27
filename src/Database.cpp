@@ -40,3 +40,6 @@ void Database::loadData() {
     }
 }
 
+void Database::addBoard(std::string board, std::string solution) {
+    // TODO
+}

@@ -2,7 +2,8 @@
 // Created by Daniel Skalski on 26/12/2024.
 //
 
-#include "Sudoku/include/Board.h"
+#include "Board.h"
+
 
 void Board::resetBoard() {
   for (int i = 0; i < 9; ++i){

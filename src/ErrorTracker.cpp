@@ -2,7 +2,7 @@
 // Created by Wiktor on 27/12/2024.
 //
 
-#include "Sudoku/include/ErrorTracker.h"
+#include "ErrorTracker.h"
 
 ErrorTracker::ErrorTracker(int maxErrors) {
     this->maxErrors = maxErrors;

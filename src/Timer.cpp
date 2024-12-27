@@ -1,4 +1,4 @@
-#include "Sudoku/include/Timer.h"
+#include "Timer.h"
 
 Timer::Timer() : isRunning(true), pausedDuration(0), startTime(std::chrono::high_resolution_clock::now()){}
 

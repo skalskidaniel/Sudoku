@@ -9,6 +9,7 @@
 class History {
 public:
     Board previous;
+
     void undo(Board board);
 };
 
