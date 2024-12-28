@@ -14,6 +14,19 @@ class Interface {
 
     void displayMessage(const std::string &message);
 
+    void displayMainMenu(const int &bestScore);
+
+    void displayResumeMenu();
+
+    void displayModeSelection();
+
+    void displayDifficultySelection();
+
+    void displayInGameOptions(const int &currentErorrs, const int &maxErrors);
+
+    void displayInputAndSolveInfo();
+
+
     // make chill sound during the game
     void sound();
 };
