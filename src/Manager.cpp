@@ -4,4 +4,4 @@
 
 #include "Manager.h"
 
-Manager::Manager(int maxErrors) : errorTracker(maxErrors), timer(), history(), hinter() {}
+Manager::Manager(int maxErrors) : errorTracker(ErrorTracker(maxErrors)), timer(Timer()), history(History()), hinter(Hinter()) {}

@@ -8,9 +8,12 @@
 
 class History {
 public:
-    Board previous;
+    Board previousBoard;
 
-    void undo(Board board);
+    History();
+
+    // returns previous board, necessary for Sudoku class to update current board state
+    Board undo(Board &board);
 };
 
 

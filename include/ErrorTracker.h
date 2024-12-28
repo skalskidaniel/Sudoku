@@ -13,12 +13,13 @@ private:
     int maxErrors;
 
 public:
-    ErrorTracker(int maxErrors);
-
     int currentError;
 
     bool isGameOver;
 
+    ErrorTracker(int maxErrors);
+
+    
     bool validateMove(Board board, Board solution, char mode);
 
 

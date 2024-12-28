@@ -11,10 +11,11 @@ class Board {
 private:
     char initialState[9][9];
 
-    char solvedState[9][9];
-
 public:
     char currentState[9][9];
+
+    char solvedState[9][9];
+
     // default constructor with null values
     Board();
 
@@ -25,6 +26,8 @@ public:
 
     // used when reading current state from saved file
     void updateCurrentState(const std::string &state);
+
+    Board& operator=(const Board &other);
 
 };
 

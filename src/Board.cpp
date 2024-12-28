@@ -30,3 +30,15 @@ void Board::updateCurrentState(const std::string &state) {
         }
     }
 }
+
+Board& Board::operator=(const Board &other) {
+    if (this == &other) {
+        return *this;
+    }
+
+    std::memcpy(initialState, other.initialState, sizeof(initialState));
+    std::memcpy(currentState, other.currentState, sizeof(currentState));
+    std::memcpy(const_cast<char(*)[9]>(solvedState), other.solvedState, sizeof(solvedState));
+
+    return *this;
+}

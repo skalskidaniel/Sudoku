@@ -4,12 +4,10 @@
 
 #include "Hinter.h"
 
-void Hinter::provideHint(Board board, Board solution) {
+void Hinter::provideHint(Board &currentBoard) {
     for (int i = 0; i < 9; i++) {
         for (int j = 0; j< 9; j++) {
-            if (board.currentState[i][j] == 0) {
-                board.currentState[i][j] = solution.currentState[i][j];
-            }
+            currentBoard.currentState[i][j] = currentBoard.solvedState[i][j];
         }
     }
 }

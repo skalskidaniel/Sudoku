@@ -4,7 +4,10 @@
 
 #include "History.h"
 
-void History::undo(Board board) {
-    board = previous;
-    previous = board;
+
+Board History::undo(Board &board) {
+    auto prev = previousBoard;
+    previousBoard = board;
+
+    return prev;
 }
