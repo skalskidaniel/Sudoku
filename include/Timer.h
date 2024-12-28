@@ -13,10 +13,6 @@ private:
 
     int pausedDuration; // in seconds
 
-    // TODO
-    // wprowadzic timeout
-    int timeout;
-
 public:
     Timer();
 
