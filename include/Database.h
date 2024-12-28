@@ -9,8 +9,9 @@
 
 class Database {
 public:
-    // storing {DIFFICULTY, {initialState, solution} }
-    std::vector<int, std::pair<Board, Board>> savedBoards;
+    // storing {DIFFICULTY, Board}
+    // DIFFICULTY IN [1, 2, 3]
+    std::vector<std::pair<int, Board>> savedBoards;
     // storing current state of a game in case we want stop for a while and resume later
     Board currentState;
     // best score so far
@@ -20,7 +21,12 @@ public:
 
     void loadData();
 
-    void addBoard(std::string board, std::string solution);
+    void addBoard(const std::string &initialState, const std::string &solutionState);
+
+    void saveCurrentState(const Board &b);
+
+    // returns true if there is a new best score
+    bool updateBestScore(const int &score);
 };
 
 

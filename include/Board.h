@@ -9,13 +9,19 @@
 
 class Board {
 private:
-  char initialState[9][9];
+    char initialState[9][9];
+
+    char solvedState[9][9];
+
 public:
-  char currentState[9][9];
+    char currentState[9][9];
+    // default constructor with null values
+    Board();
 
-  Board();
+    // constructor allows to convert pure string into Board object
+    Board(const std::string &original, const std::string &solved);
 
-  void resetBoard();
+    void resetBoard();
 
 };
 

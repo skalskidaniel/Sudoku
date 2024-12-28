@@ -1,18 +1,16 @@
 //
-// Created by Wiktor on 27/12/2024.
+// Created by Daniel Skalski on 27/12/2024.
 //
 
 #include "Database.h"
 #include <fstream>
+#include <sstream>
 
-Database::Database() {
-    bestScore = 0;
+Database::Database() : currentState(Board()), bestScore(0) {
     loadData();
 }
 
 void Database::loadData() {
-    // TODO
-    // zapisane tablice musza byc wpisywane jako klasa Board a nie string
     std::ifstream file("saves/boards.csv");
 
     if (!file.is_open()) {
@@ -21,25 +19,38 @@ void Database::loadData() {
 
     std::string line;
     while (std::getline(file, line)) {
-        if (line.empty()) {
-            continue;
-        }
-        std::string board = "";
-        std::string solution = "";
-        int i = 0;
-        while(line[i] != ';') {
-            if (line[i++] == ';') {
-                break;
-            }
-            board += line[i++];
-        }
-        while(i < line.size()) {
-            solution += line[i++];
-        }
-        savedBoards.push_back({board, solution});
+        std::stringstream ss(line);
+        std::string initialState, solvedState;
+
+        std::getline(ss, initialState, ';');
+        std::getline(ss, solvedState);
+
+        Board b(initialState, solvedState);
+        // TODO
+        // dodac poziomy trudnosci zmaiast zawsze 1
+        savedBoards.emplace_back(1, b);
+
     }
+
 }
 
-void Database::addBoard(std::string board, std::string solution) {
+void Database::addBoard(const std::string &initialState, const std::string &solutionState) {
+    // let the user to add a board to the database
+    Board b(initialState, solutionState);
     // TODO
+    // estimate difficulty
+    savedBoards.emplace_back(1, b);
 }
+
+void Database::saveCurrentState(const Board &b) {
+    currentState = b;
+}
+
+bool Database::updateBestScore(const int &score) {
+    if (score > bestScore) {
+        bestScore = score;
+        return true;
+    }
+    return false;
+}
+
