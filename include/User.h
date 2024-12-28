@@ -6,6 +6,7 @@
 #define USER_H
 #include <string>
 #include <Player.h>
+#include <Board.h>
 
 
 class User : public Player{
@@ -13,6 +14,8 @@ public:
     std::string name;
 
     std::pair<std::pair<int, int>, char> takeTurn() override;
+
+    Board inputBoard();
 };
 
 

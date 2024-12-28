@@ -10,9 +10,15 @@
 
 
 class Interface {
+    char mode;
+
+    Interface(char mode);
+
     void displayBoard(const Board &b);
 
     void displayMessage(const std::string &message);
+
+    std::string getUserInput();
 
     // make chill sound during the game
     void sound();

@@ -6,14 +6,10 @@
 #define SOLVER_H
 #include <Board.h>
 #include <Player.h>
-
+#include <CSP.h>
+#include <Backtracker.h>
 
 class Solver : public Player {
-    std::pair<std::pair<int, int>, char> takeTurn() override;
-
-    // makes user input board
-    Board inputBoardToComplete();
-
     // check if board given by the user is solvable
     bool isSolvable(const Board &b);
 
