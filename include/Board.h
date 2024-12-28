@@ -23,6 +23,9 @@ public:
 
     void resetBoard();
 
+    // used when reading current state from saved file
+    void updateCurrentState(const std::string &state);
+
 };
 
 

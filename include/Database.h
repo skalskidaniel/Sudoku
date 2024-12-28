@@ -13,20 +13,24 @@ public:
     // DIFFICULTY IN [1, 2, 3]
     std::vector<std::pair<int, Board>> savedBoards;
     // storing current state of a game in case we want stop for a while and resume later
-    Board currentState;
+    Board currentBoard;
     // best score so far
     int bestScore;
 
+
     Database();
 
-    void loadData();
+    void loadBoards();
+
+    void loadSavedState();
 
     void addBoard(const std::string &initialState, const std::string &solutionState);
 
-    void saveCurrentState(const Board &b);
+    void saveCurrentState(const Board &b, const int &currentBoardID);
 
     // returns true if there is a new best score
     bool updateBestScore(const int &score);
+
 };
 
 

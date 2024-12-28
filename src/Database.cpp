@@ -6,19 +6,20 @@
 #include <fstream>
 #include <sstream>
 
-Database::Database() : currentState(Board()), bestScore(0) {
-    loadData();
+Database::Database() {
+    loadBoards();
+    loadSavedState();
 }
 
-void Database::loadData() {
-    std::ifstream file("saves/boards.csv");
+void Database::loadBoards() {
+    std::ifstream boardsFile("saves/boards.csv");
 
-    if (!file.is_open()) {
+    if (!boardsFile.is_open()) {
         throw std::runtime_error("Failed to load saved boards!");
     }
 
     std::string line;
-    while (std::getline(file, line)) {
+    while (std::getline(boardsFile, line)) {
         std::stringstream ss(line);
         std::string initialState, solvedState;
 
@@ -32,7 +33,39 @@ void Database::loadData() {
 
     }
 
+    boardsFile.close();
 }
+
+void Database::loadSavedState() {
+    std::ifstream currentStateFile("saves/currentState.txt");
+    if (!currentStateFile.is_open()) {
+        throw std::runtime_error("Failed to load saved state of the board!");
+    }
+    if (currentStateFile.peek() != std::ifstream::traits_type::eof()) {
+        int boardID;
+        currentStateFile >> boardID;
+        currentBoard = savedBoards.at(boardID).second;
+
+        std::string line;
+        currentStateFile >> line;
+        currentBoard.updateCurrentState(line);
+    } else {
+        currentBoard = Board();
+    }
+
+    currentStateFile.close();
+    std::ifstream bestScoreFile("saves/bestScore.txt");
+    if (!bestScoreFile.is_open()) {
+        throw std::runtime_error("Failed to load saved best score!");
+    }
+
+    if (bestScoreFile.peek() != std::ifstream::traits_type::eof()) {
+        bestScoreFile >> bestScore;
+    } else {
+        bestScore = 0;
+    }
+}
+
 
 void Database::addBoard(const std::string &initialState, const std::string &solutionState) {
     // let the user to add a board to the database
@@ -42,13 +75,29 @@ void Database::addBoard(const std::string &initialState, const std::string &solu
     savedBoards.emplace_back(1, b);
 }
 
-void Database::saveCurrentState(const Board &b) {
-    currentState = b;
+void Database::saveCurrentState(const Board &b, const int &currentBoardID) {
+    currentBoard = b;
+    std::ofstream outputFile("saves/currentState.txt");
+    if (!outputFile.is_open()) {
+        throw std::runtime_error("Failed to save current state of the game!");
+    }
+    outputFile << currentBoardID << std::endl;
+    for (int i = 0; i < 9; ++i) {
+        for (int j = 0; j < 9; ++j) {
+            outputFile << b.currentState[i][j];
+        }
+    }
+    outputFile.close();
 }
 
 bool Database::updateBestScore(const int &score) {
     if (score > bestScore) {
         bestScore = score;
+        std::ofstream outputFile("saves/bestScore.txt", std::ios::trunc);
+        if (!outputFile.is_open()) {
+            throw std::runtime_error("Failed to save best score to a file!");
+        }
+        outputFile << score;
         return true;
     }
     return false;
