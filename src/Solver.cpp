@@ -49,14 +49,34 @@ std::pair<std::pair<int, int>, char> Solver::takeTurn() {
 
 Board Solver::inputBoardToComplete() {
     Board b;
-    std::cout << "Input your board to complete:\n";
+
+    std::cout << "Please input your own sudoku board.\n";
+    std::cout << "You will have to write each line one by one.\n";
+    std::cout << "Places with missing digit mark as '0'.\n";
+    std::cout << "Solver will check whether it is solvable, and solve if it is so.\n";
+
     for (int i = 0; i < 9; ++i) {
         std::string row;
-        std::cin >> row;
+        while (true) {
+            std::cout << "Row " << i << ": ";
+            std::cin >> row;
+            if (row.length() != 9) {
+                std::cout << "Error: Each row must be exactly 9 characters long.\n";
+                continue;
+            }
+            bool valid = true;
+            for (char c : row) {
+                if (c < '0' || c > '9') {
+                    std::cout << "Error: Each character must be a digit between 0 and 9.\n";
+                    valid = false;
+                    break;
+                }
+            }
+            if (valid) break;
+        }
         for (int j = 0; j < 9; ++j) {
             b.currentState[i][j] = row[j];
         }
     }
     return b;
 }
-
