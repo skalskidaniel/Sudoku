@@ -9,6 +9,7 @@
 #include <Player.h>
 #include <Manager.h>
 
+//TODO class player is abstract error
 
 class Sudoku {
 public:
@@ -21,7 +22,7 @@ public:
     enum Mode { SOLVER = 'S', USER = 'U' };
     enum Difficulty {EASY = 1, MEDIUM = 2, HARD = 3};
 
-    Sudoku(const Player &p, const Mode &m, const Difficulty &d, const std::vector<Board> &savedBoards);
+    Sudoku(const Mode &m, const Difficulty &d, const std::vector<Board> &savedBoards);
 
     void chooseBoard(const std::vector<Board> &savedBoards);
 

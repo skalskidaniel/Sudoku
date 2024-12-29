@@ -9,10 +9,8 @@
 
 
 class ErrorTracker {
-private:
     int maxErrors;
 
-public:
     int currentError;
 
     bool isGameOver;

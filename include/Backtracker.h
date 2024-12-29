@@ -10,6 +10,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <CSP.h>
+#include <chrono>
 
 //TODO find the issue with ambigious CSP error
 
@@ -18,6 +19,9 @@ private:
     CSP& csp;
     int counter;
     std::unordered_map<std::string, int> assignment;
+    std::chrono::steady_clock::time_point start_time;
+
+    bool isTimeExceeded() const;
 
     std::string selectUnassignedVariable(const std::unordered_map<std::string, int>& assignment,
                                          const std::unordered_map<std::string, std::unordered_set<int>>& domains);

@@ -10,7 +10,7 @@
 
 
 class Interface {
-    void displayBoard(const Board &b);
+    void displayBoard( Board &b);
 
     enum Colour {GREEN, YELLOW, RED};
     void displayMessage(const std::string &message, const Colour &c);

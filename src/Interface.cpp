@@ -36,7 +36,7 @@ void Interface::displayDifficultySelection() {
     std::cout << "3. Hard\n";
 }
 
-void Interface::displayBoard(const Board &b) {
+void Interface::displayBoard(Board &b) {
     std::cout << "\t\033[1m1\t2\t3\t4\t5\t6\t7\t8\t9\033[0m\n";
     const char rowLabels[] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'};
     for (int i = 0; i < 9; ++i) {

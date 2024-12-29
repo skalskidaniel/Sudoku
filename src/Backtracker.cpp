@@ -9,7 +9,14 @@ Backtracker::Backtracker(CSP &csp) : csp(csp), counter(0) {}
 std::unordered_map<std::string, int> Backtracker::solve() {
     counter = 0;
     assignment.clear();
+    start_time = std::chrono::steady_clock::now();
     return backtrack(assignment);
+}
+
+bool Backtracker::isTimeExceeded() const {
+	auto now = std::chrono::steady_clock::now();
+	auto elapsed = std::chrono::duration_cast<std::chrono::seconds>(now - start_time).count();
+	return elapsed > 15;
 }
 
 std::string Backtracker::selectUnassignedVariable(const std::unordered_map<std::string, int> &assignment,
@@ -72,7 +79,11 @@ std::unordered_map<std::string, std::unordered_set<int>> Backtracker::removeInco
 }
 
 std::unordered_map<std::string, int> Backtracker::backtrack(std::unordered_map<std::string, int> &assignment) {
-    if (csp.isComplete(assignment) && csp.isConsistent(assignment)) {
+    if (isTimeExceeded()) {
+        return {};
+    }
+
+  	if (csp.isComplete(assignment) && csp.isConsistent(assignment)) {
         return assignment;
     }
 

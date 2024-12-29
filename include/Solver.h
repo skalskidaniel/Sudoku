@@ -8,6 +8,9 @@
 #include <Player.h>
 
 class Solver : public Player {
+    Board solvedBoard = Board();
+    bool is_solved = false;
+
     std::pair<std::pair<int, int>, char> takeTurn() override;
 
     // makes user input board

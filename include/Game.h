@@ -6,6 +6,7 @@
 #define GAME_H
 #include <Sudoku.h>
 #include <Interface.h>
+#include <iostream>
 
 
 
@@ -17,7 +18,7 @@ public:
 
     Database database;
 
-    Game();
+    Game(char mode, int difficulty);
 
     void start();
 

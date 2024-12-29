@@ -5,8 +5,8 @@
 #include <Solver.h>
 #include <CSP.h>
 #include <Backtracker.h>
+#include <iostream>
 
-//TODO implement isSolvable with timer waiting for the result of the backtracker if some time is exceeded return false
 //TODO fix ambigous CSP error
 
 Board Solver::solve(Board &b) {
@@ -24,13 +24,39 @@ Board Solver::solve(Board &b) {
 bool Solver::isSolvable(const Board &b) {
     CSP csp = CSP.sudokuToCSP(b.currentState);
     Backtracker backtracker(csp);
-    return backtracker.solve().size() > 0;
+    std::unordered_map<std::string,int> solution = backtracker.solve();
+    return !solution.empty();
 }
 
 std::pair<std::pair<int, int>, char> Solver::takeTurn() {
-    // TODO
+    Board b = inputBoardToComplete();
+    Board toSolve = b;
+    if (!isSolvable(toSolve)) {
+        return {{-1, -1}, '0'};
+    }
+    if(!is_solved){
+        solvedBoard = solve(toSolve);
+        is_solved = true;
+    }
+    for (int i = 0; i < 9; ++i) {
+        for (int j = 0; j < 9; ++j) {
+            if (b.currentState[i][j] == '0') {
+                return {{i, j}, solvedBoard.currentState[i][j]};
+            }
+        }
+    }
 }
 
 Board Solver::inputBoardToComplete() {
-    // TODO
+    Board b;
+    std::cout << "Input your board to complete:\n";
+    for (int i = 0; i < 9; ++i) {
+        std::string row;
+        std::cin >> row;
+        for (int j = 0; j < 9; ++j) {
+            b.currentState[i][j] = row[j];
+        }
+    }
+    return b;
 }
+
