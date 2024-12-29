@@ -9,8 +9,8 @@
 #include <User.h>
 
 
-Sudoku::Sudoku (const Mode &m, const Difficulty &d, const std::vector<Board> &savedBoards)
-    : player(nullptr) {
+Sudoku::Sudoku(const Mode &m, const Difficulty &d, const std::vector<Board> &savedBoards)
+    : player(nullptr), manager(0) {
     if (m == USER) {
         player = std::make_unique<User>();
     } else {
