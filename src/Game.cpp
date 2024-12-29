@@ -5,3 +5,6 @@
 #include "Game.h"
 
 // TODO
+Game::Game() {
+
+}

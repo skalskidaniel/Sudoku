@@ -15,6 +15,8 @@ public:
 
     Interface interface;
 
+    Database database;
+
     Game();
 
     void start();

@@ -27,9 +27,8 @@ void Database::loadBoards() {
         std::getline(ss, solvedState);
 
         Board b(initialState, solvedState);
-        // TODO
-        // dodac poziomy trudnosci zmaiast zawsze 1
-        savedBoards.emplace_back(1, b);
+
+        savedBoards.emplace_back(b);
 
     }
 
@@ -44,7 +43,7 @@ void Database::loadSavedState() {
     if (currentStateFile.peek() != std::ifstream::traits_type::eof()) {
         int boardID;
         currentStateFile >> boardID;
-        currentBoard = savedBoards.at(boardID).second;
+        currentBoard = savedBoards.at(boardID);
 
         std::string line;
         currentStateFile >> line;
@@ -70,9 +69,7 @@ void Database::loadSavedState() {
 void Database::addBoard(const std::string &initialState, const std::string &solutionState) {
     // let the user to add a board to the database
     Board b(initialState, solutionState);
-    // TODO
-    // estimate difficulty
-    savedBoards.emplace_back(1, b);
+    savedBoards.emplace_back(b);
 }
 
 void Database::saveCurrentState(const Board &b, const int &currentBoardID) {

@@ -26,7 +26,7 @@ Choose desired difficulty:
 2. Medium
 3. Hard
 
-#### Interface now prints random board with chosen difficulty
+#### Interface now prints random board
 # Row and column indexes should be in bold
 # inserted digits by user should be green
     1   2   3   4   5   6   7   8   9
@@ -50,7 +50,8 @@ Choose an option:
 ### insert a digit option
 Select row where you want to insert a digit: _
 Select colum where you want to insert a digit: _
-Which digit would you like to insert? (type -1 to cancel): _
+Which digit would you like to insert? (type X to cancel): _
+# if user choose X, then return to choose an option menu
 
 ### in case max errors is over counted, show a message that game is over then:
 Do you want to see correctly solved board? [Y/N]

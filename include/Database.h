@@ -9,9 +9,7 @@
 
 class Database {
 public:
-    // storing {DIFFICULTY, Board}
-    // DIFFICULTY IN [1, 2, 3]
-    std::vector<std::pair<int, Board>> savedBoards;
+    std::vector<Board> savedBoards;
     // storing current state of a game in case we want stop for a while and resume later
     Board currentBoard;
     // best score so far

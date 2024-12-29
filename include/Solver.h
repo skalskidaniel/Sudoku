@@ -16,9 +16,6 @@ class Solver : public Player {
     // check if board given by the user is solvable
     bool isSolvable(const Board &b);
 
-    // estimate difficulty of board given by the user
-    int estimateDifficulty(const Board &b);
-
     // solve board given by the user
     Board solve(Board &b);
 };

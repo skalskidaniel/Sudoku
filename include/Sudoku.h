@@ -5,6 +5,7 @@
 #ifndef SUDOKU_H
 #define SUDOKU_H
 #include <Board.h>
+#include <Database.h>
 #include <Player.h>
 #include <Manager.h>
 
@@ -15,19 +16,15 @@ public:
 
     Player player;
 
-    enum Mode { SOLVER = 'S', USER = 'U' };
-
-    char mode;
-
     Manager manager;
 
+    enum Mode { SOLVER = 'S', USER = 'U' };
     enum Difficulty {EASY = 1, MEDIUM = 2, HARD = 3};
 
-    // default game starts with a user playing
-    // TODO
-    Sudoku(const Player &p, Mode m = USER, Difficulty d);
+    Sudoku(const Player &p, const Mode &m, const Difficulty &d, const std::vector<Board> &savedBoards);
 
-    void chooseBoard();
+    void chooseBoard(const std::vector<Board> &savedBoards);
+
 };
 
 

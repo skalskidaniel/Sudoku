@@ -12,7 +12,8 @@
 class Interface {
     void displayBoard(const Board &b);
 
-    void displayMessage(const std::string &message);
+    enum Colour {GREEN, YELLOW, RED};
+    void displayMessage(const std::string &message, const Colour &c);
 
     void displayMainMenu(const int &bestScore);
 

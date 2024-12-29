@@ -4,7 +4,7 @@
 
 #ifndef BOARD_H
 #define BOARD_H
-
+#include <string>
 
 
 class Board {
@@ -28,6 +28,8 @@ public:
     void updateCurrentState(const std::string &state);
 
     Board& operator=(const Board &other);
+
+    bool isInsertedByUser(const int &i, const int &j);
 
 };
 

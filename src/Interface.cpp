@@ -37,22 +37,23 @@ void Interface::displayDifficultySelection() {
 }
 
 void Interface::displayBoard(const Board &b) {
-    // TODO
-    // inserted digits should be green
-    std::cout << "\t1\t2\t3\t4\t5\t6\t7\t8\t9\n";
+    std::cout << "\t\033[1m1\t2\t3\t4\t5\t6\t7\t8\t9\033[0m\n";
     const char rowLabels[] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'};
     for (int i = 0; i < 9; ++i) {
-        std::cout << rowLabels[i] << '\t';
+        std::cout << "\033[1m" << rowLabels[i] << "\033[0m\t";
         for (int j = 0; j < 9; ++j) {
             if (b.currentState[i][j] == '0') {
                 std::cout << "_\t";
             } else {
-                std::cout << b.currentState[i][j] << "\t";
+                if (b.isInsertedByUser(i, j)) {
+                    std::cout << "\033[1;32m" << b.currentState[i][j] << "\033[0m\t";
+                } else {
+                    std::cout << b.currentState[i][j] << "\t";
+                }
             }
         }
         std::cout << "\n";
     }
-
 }
 
 void Interface::displayInGameOptions(const int &currentErorrs, const int &maxErrors) {
@@ -75,10 +76,20 @@ void Interface::sound() {
     // TODO
 }
 
-void Interface::displayMessage(const std::string &message) {
-    std::cout << message << std::endl;
-    // TODO
-    // add colours to the message
+void Interface::displayMessage(const std::string &message, const Colour &c) {
+    std::string colorCode;
+    switch (c) {
+        case GREEN:
+            colorCode = "\033[1;32m";
+        break;
+        case YELLOW:
+            colorCode = "\033[1;33m";
+        break;
+        case RED:
+            colorCode = "\033[1;31m";
+        break;
+    }
+    std::cout << colorCode << message << "\033[0m" << std::endl;
 }
 
 

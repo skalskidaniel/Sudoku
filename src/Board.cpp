@@ -42,3 +42,8 @@ Board& Board::operator=(const Board &other) {
 
     return *this;
 }
+
+bool Board::isInsertedByUser(const int &i, const int &j) {
+    if (currentState[i][j] != initialState[i][j]) return true;
+    return false;
+}
