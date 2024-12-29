@@ -10,6 +10,7 @@
 
 
 class Interface {
+public:
     void displayBoard( Board &b);
 
     enum Colour {GREEN, YELLOW, RED};

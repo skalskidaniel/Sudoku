@@ -9,13 +9,11 @@
 #include <Player.h>
 #include <Manager.h>
 
-//TODO class player is abstract error
-
 class Sudoku {
 public:
     Board board;
 
-    Player player;
+    std::unique_ptr<Player> player;
 
     Manager manager;
 

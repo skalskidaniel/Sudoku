@@ -12,8 +12,6 @@
 #include <CSP.h>
 #include <chrono>
 
-//TODO find the issue with ambigious CSP error
-
 class Backtracker {
 private:
     CSP& csp;

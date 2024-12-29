@@ -8,13 +8,13 @@
 #include <Solver.h>
 #include <User.h>
 
-//TODO class player and manager is not initialized in the constructor error
 
-Sudoku::Sudoku (const Mode &m, const Difficulty &d, const std::vector<Board> &savedBoards) {
+Sudoku::Sudoku (const Mode &m, const Difficulty &d, const std::vector<Board> &savedBoards)
+    : player(nullptr) {
     if (m == USER) {
-        player = User();
+        player = std::make_unique<User>();
     } else {
-        player = Solver();
+        player = std::make_unique<Solver>();
     }
 
     if (d == EASY) {

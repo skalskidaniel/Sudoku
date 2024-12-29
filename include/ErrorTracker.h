@@ -9,6 +9,7 @@
 
 
 class ErrorTracker {
+public:
     int maxErrors;
 
     int currentError;
