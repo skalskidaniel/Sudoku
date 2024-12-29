@@ -3,9 +3,11 @@
 //
 
 #include <Solver.h>
+#include <CSP.h>
+#include <Backtracker.h>
 
 //TODO implement isSolvable with timer waiting for the result of the backtracker if some time is exceeded return false
-//TODO find the issue with ambigious CSP error
+//TODO fix ambigous CSP error
 
 Board Solver::solve(Board &b) {
     CSP csp = CSP.sudokuToCSP(b.currentState);
@@ -23,4 +25,12 @@ bool Solver::isSolvable(const Board &b) {
     CSP csp = CSP.sudokuToCSP(b.currentState);
     Backtracker backtracker(csp);
     return backtracker.solve().size() > 0;
+}
+
+std::pair<std::pair<int, int>, char> Solver::takeTurn() {
+    // TODO
+}
+
+Board Solver::inputBoardToComplete() {
+    // TODO
 }
