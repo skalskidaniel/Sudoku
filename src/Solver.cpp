@@ -15,7 +15,7 @@ Board Solver::solve(Board &b) {
     for (const auto& [var, value] : solution) {
         int row = (var[0] - '1') / 3;
         int col = (var[1] - '1') / 3;
-        b.currentState[row][col] = value;
+        b.solvedState[row][col] = value;
     }
     return b;
 }

@@ -5,6 +5,7 @@
 #ifndef ERRORTRACKER_H
 #define ERRORTRACKER_H
 #include "Board.h"
+#include "CSP.h"
 
 
 
@@ -19,7 +20,7 @@ public:
     ErrorTracker(int maxErrors);
 
     
-    bool validateMove(Board board, Board solution, char mode);
+    bool validateMove(Board board, std::pair<std::pair<int, int>, char> move);
 
 
 

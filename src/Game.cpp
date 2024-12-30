@@ -71,6 +71,9 @@ void Game::playUserMode() {
         interface.displayInGameOptions(sudoku.manager.errorTracker.currentErrors, sudoku.manager.errorTracker.maxErrors);
 
         int userChoice;
+        Board solution = sudoku.board;
+
+
         while (true) {
             std::cin >> userChoice;
 
@@ -89,7 +92,7 @@ void Game::playUserMode() {
             // insert a digit
             auto move = sudoku.player->takeTurn();
             // TODO change errorTracker.validateMove() to accept output from function above, and check if it is valid inside it. it should return true or false if it is valid and increment erorr count
-            if (sudoku.manager.errorTracker.validateMove(move)) {
+            if (sudoku.manager.errorTracker.validateMove( sudoku.board ,move)) {
                 sudoku.board.currentState[move.first.first][move.first.second] = move.second;
             }
             if (sudoku.manager.errorTracker.currentErrors > sudoku.manager.errorTracker.maxErrors) {

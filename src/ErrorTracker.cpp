@@ -10,17 +10,16 @@ ErrorTracker::ErrorTracker(int maxErrors) {
     isGameOver = false;
 }
 
-bool ErrorTracker::validateMove(Board board, Board solution, char mode) {
-    for(int i = 0; i < 9; i++) {
-        for(int j = 0; j < 9; j++) {
-            if (board.currentState[i][j] != '0' && board.currentState[i][j] != solution.currentState[i][j]) {
-                currentErrors++;
-            }
-        }
+bool ErrorTracker::validateMove(Board board, std::pair<std::pair<int, int>, char> move) {
+    bool is_valid = true;
+    if(board.solvedState[move.first.first][move.first.second] != move.second) {
+        ++currentErrors;
+        is_valid = false;
     }
-    if (currentErrors >= maxErrors) {
+
+    if (!is_valid && currentErrors >= maxErrors) {
         isGameOver = true;
         return false;
     }
-    return true;
+    return is_valid;
 }
