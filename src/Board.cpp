@@ -16,6 +16,7 @@ Board::Board() {
 }
 
 Board::Board(const std::string &original, const std::string &solved) {
+    original_string = original;
      for (int i = 0; i < 9; ++i) {
          for (int j = 0; j < 9; ++j) {
              initialState[i][j] = original[9 * i + j];

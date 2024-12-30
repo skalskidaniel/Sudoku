@@ -12,6 +12,8 @@ private:
     char initialState[9][9];
 
 public:
+    std::string original_string;
+
     char currentState[9][9];
 
     char solvedState[9][9];
