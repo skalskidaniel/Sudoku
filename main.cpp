@@ -1,178 +1,103 @@
 #include <game.h>
 #include <iostream>
 
-int main() {
-    Interface startInterface = Interface();
-    Database startDatabase(false);
+int getUserInput(const std::vector<int> &availableValues) {
+    // returns input from user with error handling
+    int userChoice;
+    while (true) {
+        std::cin >> userChoice;
 
-    if (startDatabase.canBeResumed) {
-        startInterface.displayResumeMenu();
-
-        int resumeChoice;
-        while (true) {
-            std::cin >> resumeChoice;
-
-            if (std::cin.fail()) {
-                std::cin.clear();
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                std::cout << "Invalid input! Please enter 1 to resume the game, 2 to start a new game, or 3 to quit." << std::endl;
-            } else if (resumeChoice != 1 && resumeChoice != 2 && resumeChoice != 3) {
-                std::cout << "Invalid input! Please enter 1 to resume the game, 2 to start a new game, or 3 to quit." << std::endl;
-            } else {
-                break;
-            }
-        }
-
-        if (resumeChoice == 3) {
-            std::cout << "Hope to see you soon!\n";
-            return 0;
-        } else if (resumeChoice == 1) {
-            // Resume the game, resumed game is always in user mode
-            Game g = Game('U', startDatabase.difficulty);
-            g.sudoku.board = startDatabase.currentBoard;
-            g.start();
-        } else if (resumeChoice == 2) {
-            // Start a new game
-            startInterface.displayModeSelection();
-
-            int modeChoice;
-            while (true) {
-                std::cin >> modeChoice;
-
-                if (std::cin.fail()) {
-                    std::cin.clear();
-                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                    std::cout << "Invalid input! Please choose valid game mode." << std::endl;
-                } else if (modeChoice != 1 && modeChoice != 2) {
-                    std::cout << "Invalid input! Please choose valid game mode." << std::endl;
-                } else {
-                    break;
-                }
-            }
-
-            if (modeChoice == 1) {
-                // User mode
-                startInterface.displayDifficultySelection();
-
-                int difficultyChoice;
-                while (true) {
-                    std::cin >> difficultyChoice;
-
-                    if (std::cin.fail()) {
-                        std::cin.clear();
-                        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                        std::cout << "Invalid input! Please choose a valid difficulty level." << std::endl;
-                    } else if (difficultyChoice != 1 && difficultyChoice != 2 && difficultyChoice != 3) {
-                        std::cout << "Invalid input! Please choose a valid difficulty level." << std::endl;
-                    } else {
-                        break;
-                    }
-                }
-
-                if (difficultyChoice == 1) {
-                    // EASY
-                    Game g = Game('U', 1);
-                    g.start();
-                } else if (difficultyChoice == 2) {
-                    // MEDIUM
-                    Game g = Game('U', 2);
-                    g.start();
-                } else if (difficultyChoice == 3) {
-                    // HARD
-                    Game g = Game('U', 3);
-                    g.start();
-                } else {
-                    throw std::runtime_error("Unknown difficulty!\n");
-                }
-
-            } else if (modeChoice == 2) {
-                // Solver mode
-                Game g = Game('S', 1);
-                g.start();
-            }
-        }
-    } else {
-        startInterface.displayMainMenu(startDatabase.bestScore);
-
-        int mainChoice;
-        while (true) {
-            std::cin >> mainChoice;
-
-            if (std::cin.fail()) {
-                std::cin.clear();
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                std::cout << "Invalid input! Please enter 1 to start a game or 2 to quit." << std::endl;
-            } else if (mainChoice != 1 && mainChoice != 2) {
-                std::cout << "Invalid input! Please enter 1 to start a game or 2 to quit." << std::endl;
-            } else {
-                break;
-            }
-        }
-
-        if (mainChoice == 2) {
-            std::cout << "Hope to see you soon!\n";
-            return 0;
+        if (std::cin.fail()) {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout << "Invalid input! Please choose valid option." << std::endl;
+        } else if (std::find(availableValues.begin(), availableValues.end(), userChoice) == availableValues.end()) {
+            std::cout << "Invalid input! Please choose valid option." << std::endl;
         } else {
-            // Start a new game
-            startInterface.displayModeSelection();
-
-            int modeChoice;
-            while (true) {
-                std::cin >> modeChoice;
-
-                if (std::cin.fail()) {
-                    std::cin.clear();
-                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                    std::cout << "Invalid input! Please choose valid game mode." << std::endl;
-                } else if (modeChoice != 1 && modeChoice != 2) {
-                    std::cout << "Invalid input! Please choose valid game mode." << std::endl;
-                } else {
-                    break;
-                }
-            }
-
-            if (modeChoice == 1) {
-                // User mode
-                startInterface.displayDifficultySelection();
-
-                int difficultyChoice;
-                while (true) {
-                    std::cin >> difficultyChoice;
-
-                    if (std::cin.fail()) {
-                        std::cin.clear();
-                        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                        std::cout << "Invalid input! Please choose a valid difficulty level." << std::endl;
-                    } else if (difficultyChoice != 1 && difficultyChoice != 2 && difficultyChoice != 3) {
-                        std::cout << "Invalid input! Please choose a valid difficulty level." << std::endl;
-                    } else {
-                        break;
-                    }
-                }
-
-                if (difficultyChoice == 1) {
-                    // EASY
-                    Game g = Game('U', 1);
-                    g.start();
-                } else if (difficultyChoice == 2) {
-                    // MEDIUM
-                    Game g = Game('U', 2);
-                    g.start();
-                } else if (difficultyChoice == 3) {
-                    // HARD
-                    Game g = Game('U', 3);
-                    g.start();
-                } else {
-                    throw std::runtime_error("Unknown difficulty!\n");
-                }
-
-            } else if (modeChoice == 2) {
-                // Solver mode
-                Game g = Game('S', 1);
-                g.start();
-            }
+            // input is valid
+            return userChoice;
         }
     }
-    // TODO after all of this there will be again displayed main menu, consider making separate functions bo jest kurwa spaghetti powyzej
+}
 
+bool newGameMenu(Database &startDatabase) {
+    // returns false if user wants to quit the game
+    Interface startInterface = Interface();
+    startInterface.displayMainMenu(startDatabase.bestScore);
+    // 1. new game 2. quit
+    int choice = getUserInput({1, 2});
+    switch (choice) {
+        case 1: {
+            startInterface.displayModeSelection();
+            // 1. user mode 2. solver mode
+            int mode = getUserInput({1, 2});
+            switch (mode) {
+                case 1: {
+                    startInterface.displayDifficultySelection();
+                    int difficulty = getUserInput({1, 2, 3});
+                    Game game = Game('U', difficulty);
+                    game.start();
+                    return true;
+                }
+                case 2: {
+                    Game game = Game('S', 1);
+                    game.start();
+                    return true;
+                }
+                default: {
+                    throw std::runtime_error("Unknown game mode in newGameMenu()!\n");
+                }
+            }
+        }
+        case 2: {
+            std::cout << "Hope to see you soon!\n";
+            return false;
+        }
+        default: {
+            throw std::runtime_error("Unknown user choice in newGameMenu()!\n");
+        }
+    }
+}
+
+bool resumeMenu(Database &startDatabase) {
+    // returns false if user wants to quit the game
+    Interface startInterface = Interface();
+    startInterface.displayResumeMenu();
+    // 1. Resume 2. new game 3. quit
+    int choice = getUserInput({1, 2, 3});
+    switch (choice) {
+        case 1: {
+            // TODO make sure it resumes the game
+            Game game = Game('U', startDatabase.difficulty);
+            game.start();
+            return true;
+        }
+        case 2: {
+            return newGameMenu(startDatabase);
+        }
+        case 3: {
+            std::cout << "Hope to see you soon!\n";
+            return false;
+        }
+        default: {
+            throw std::runtime_error("Unknown user choice in resumeMenu()!\n");
+        }
+    }
+}
+
+
+
+bool mainMenu() {
+    // returns false if user wants to quit the game
+    Database startDatabase(false);
+    if (startDatabase.canBeResumed) {
+        return resumeMenu(startDatabase);
+    } else {
+        return newGameMenu(startDatabase);
+    }
+}
+
+
+int main() {
+    while (mainMenu());
 }

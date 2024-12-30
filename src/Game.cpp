@@ -71,8 +71,6 @@ void Game::playUserMode() {
         interface.displayInGameOptions(sudoku.manager.errorTracker.currentErrors, sudoku.manager.errorTracker.maxErrors);
 
         int userChoice;
-        Board solution = sudoku.board;
-
 
         while (true) {
             std::cin >> userChoice;

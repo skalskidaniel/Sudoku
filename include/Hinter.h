@@ -9,7 +9,6 @@
 
 class Hinter {
 public:
-    // fills current board completely
     void provideHint(Board &currentBoard);
 };
 

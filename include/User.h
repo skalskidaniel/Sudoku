@@ -10,8 +10,6 @@
 
 class User : public Player{
 public:
-    std::string name;
-
     std::pair<std::pair<int, int>, char> takeTurn() override;
 
 };
