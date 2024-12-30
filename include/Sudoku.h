@@ -13,6 +13,8 @@ class Sudoku {
 public:
     Board board;
 
+    int boardID;
+
     std::unique_ptr<Player> player;
 
     Manager manager;
@@ -20,8 +22,9 @@ public:
     enum Mode { SOLVER = 'S', USER = 'U' };
     enum Difficulty {EASY = 1, MEDIUM = 2, HARD = 3};
 
-    Sudoku(const Mode &m, const Difficulty &d, const std::vector<Board> &savedBoards);
+    Mode mode;
 
+    Sudoku(const Mode &m, const Difficulty &d, const std::vector<Board> &savedBoards);
 
     void chooseBoard(const std::vector<Board> &savedBoards);
 

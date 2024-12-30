@@ -1,9 +1,9 @@
 #include <game.h>
+#include <iostream>
 
 int main() {
-    std::cout << "Loading...\n";
     Interface startInterface = Interface();
-    Database startDatabase = Database();
+    Database startDatabase(false);
 
     if (startDatabase.canBeResumed) {
         startInterface.displayResumeMenu();
@@ -101,16 +101,16 @@ int main() {
             if (std::cin.fail()) {
                 std::cin.clear();
                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                std::cout << "Invalid input! Please enter 1 to start a game or 0 to quit." << std::endl;
-            } else if (mainChoice != 1 && mainChoice != 0) {
-                std::cout << "Invalid input! Please enter 1 to start a game or 0 to quit." << std::endl;
+                std::cout << "Invalid input! Please enter 1 to start a game or 2 to quit." << std::endl;
+            } else if (mainChoice != 1 && mainChoice != 2) {
+                std::cout << "Invalid input! Please enter 1 to start a game or 2 to quit." << std::endl;
             } else {
                 break;
             }
         }
 
-        if (mainChoice == 0) {
-            std::cout << "Hope to see you soon!'n";
+        if (mainChoice == 2) {
+            std::cout << "Hope to see you soon!\n";
             return 0;
         } else {
             // Start a new game
@@ -173,6 +173,6 @@ int main() {
             }
         }
     }
-
+    // TODO after all of this there will be again displayed main menu, consider making separate functions bo jest kurwa spaghetti powyzej
 
 }

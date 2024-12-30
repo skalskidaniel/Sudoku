@@ -5,9 +5,13 @@
 #include "Database.h"
 #include <fstream>
 #include <sstream>
+#include <iostream>
 
-Database::Database() {
-    loadBoards();
+Database::Database(bool loadBoards) {
+    if (loadBoards) {
+        std::cout << "Loading...\n";
+        this->loadBoards();
+    }
     loadSavedState();
 }
 

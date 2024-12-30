@@ -9,7 +9,7 @@
 
 Board Solver::solve(Board &b) {
     CSP csp = CSP();
-    csp = csp.sudokuToCSP(b.original_string);
+    csp = csp.sudokuToCSP(b.originalString);
     Backtracker backtracker(csp);
     auto solution = backtracker.solve();
     for (const auto& [var, value] : solution) {
@@ -18,13 +18,11 @@ Board Solver::solve(Board &b) {
         b.currentState[row][col] = value;
     }
     return b;
-    std::cout << "Solver::solve to be implemented\n";
-    return Board();
 }
 
 bool Solver::isSolvable(const Board &b) {
     CSP csp = CSP();
-    csp = csp.sudokuToCSP(b.original_string);
+    csp = csp.sudokuToCSP(b.originalString);
     Backtracker backtracker(csp);
     std::unordered_map<std::string,int> solution = backtracker.solve();
     return !solution.empty();
@@ -80,5 +78,6 @@ Board Solver::inputBoardToComplete() {
             b.currentState[i][j] = row[j];
         }
     }
+
     return b;
 }

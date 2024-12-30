@@ -8,6 +8,7 @@
 #include <Player.h>
 
 class Solver : public Player {
+public:
     Board solvedBoard = Board();
     bool is_solved = false;
 

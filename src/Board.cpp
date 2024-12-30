@@ -16,7 +16,7 @@ Board::Board() {
 }
 
 Board::Board(const std::string &original, const std::string &solved) {
-    original_string = original;
+    originalString = original;
      for (int i = 0; i < 9; ++i) {
          for (int j = 0; j < 9; ++j) {
              initialState[i][j] = original[9 * i + j];
@@ -58,3 +58,13 @@ bool Board::isInsertedByUser(const int &i, const int &j) {
     if (currentState[i][j] != initialState[i][j]) return true;
     return false;
 }
+
+bool Board::isSolved() {
+    for (int i = 0; i < 9; ++i) {
+        for (int j = 0; j < 9; ++j) {
+            if (currentState[i][j] == '0') return false;
+        }
+    }
+    return true;
+}
+

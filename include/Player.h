@@ -8,6 +8,7 @@
 
 
 class Player {
+public:
     virtual std::pair<std::pair<int, int>, char> takeTurn() = 0;
 };
 

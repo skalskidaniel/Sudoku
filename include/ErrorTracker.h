@@ -12,7 +12,7 @@ class ErrorTracker {
 public:
     int maxErrors;
 
-    int currentError;
+    int currentErrors;
 
     bool isGameOver;
 

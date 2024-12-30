@@ -9,20 +9,23 @@
 #include <iostream>
 
 
-
 class Game {
 public:
-    Sudoku sudoku;
+    Database database;
 
     Interface interface;
 
-    Database database;
+    Sudoku sudoku;
 
     Game(char mode, int difficulty);
 
     void start();
 
     void saveProgress();
+
+    void playUserMode();
+
+    void playSolverMode();
 };
 
 

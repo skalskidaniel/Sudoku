@@ -11,6 +11,7 @@
 
 Sudoku::Sudoku(const Mode &m, const Difficulty &d, const std::vector<Board> &savedBoards)
     : player(nullptr), manager(0) {
+    mode = m;
     if (m == USER) {
         player = std::make_unique<User>();
     } else {
@@ -34,5 +35,6 @@ void Sudoku::chooseBoard(const std::vector<Board> &savedBoards) {
     std::uniform_int_distribution<> dis(0, savedBoards.size() - 1);
     int randomIndex = dis(gen);
     board = savedBoards[randomIndex];
+    boardID = randomIndex;
 }
 

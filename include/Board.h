@@ -12,7 +12,7 @@ private:
     char initialState[9][9];
 
 public:
-    std::string original_string;
+    std::string originalString;
 
     char currentState[9][9];
 
@@ -32,6 +32,8 @@ public:
     Board& operator=(const Board &other);
 
     bool isInsertedByUser(const int &i, const int &j);
+
+    bool isSolved();
 
 };
 

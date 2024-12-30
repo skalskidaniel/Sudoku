@@ -19,7 +19,7 @@ public:
 
     int difficulty;
 
-    Database();
+    Database(bool loadBoards = true);
 
     void loadBoards();
 

@@ -28,7 +28,6 @@ public:
 
     void displayInputAndSolveInfo();
 
-
     // make chill sound during the game
     void sound();
 };
