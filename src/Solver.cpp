@@ -7,6 +7,8 @@
 #include <Backtracker.h>
 #include <iostream>
 
+//TODO debug solver class to work with the rest of the project
+
 Board Solver::solve(Board &b) {
     CSP csp = CSP();
     csp = csp.sudokuToCSP(b.originalString);
