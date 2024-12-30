@@ -12,7 +12,7 @@ Database::Database() {
 }
 
 void Database::loadBoards() {
-    std::ifstream boardsFile("saves/boards.csv");
+    std::ifstream boardsFile("../saves/boards.csv");
 
     if (!boardsFile.is_open()) {
         throw std::runtime_error("Failed to load saved boards!");
@@ -36,11 +36,13 @@ void Database::loadBoards() {
 }
 
 void Database::loadSavedState() {
-    std::ifstream currentStateFile("saves/currentState.txt");
+    std::ifstream currentStateFile("../saves/currentState.txt");
     if (!currentStateFile.is_open()) {
         throw std::runtime_error("Failed to load saved state of the board!");
     }
     if (currentStateFile.peek() != std::ifstream::traits_type::eof()) {
+        currentStateFile >> difficulty;
+
         int boardID;
         currentStateFile >> boardID;
         currentBoard = savedBoards.at(boardID);
@@ -48,12 +50,14 @@ void Database::loadSavedState() {
         std::string line;
         currentStateFile >> line;
         currentBoard.updateCurrentState(line);
+        canBeResumed = true;
     } else {
         currentBoard = Board();
+        canBeResumed = false;
     }
 
     currentStateFile.close();
-    std::ifstream bestScoreFile("saves/bestScore.txt");
+    std::ifstream bestScoreFile("../saves/bestScore.txt");
     if (!bestScoreFile.is_open()) {
         throw std::runtime_error("Failed to load saved best score!");
     }
@@ -78,6 +82,7 @@ void Database::saveCurrentState(const Board &b, const int &currentBoardID) {
     if (!outputFile.is_open()) {
         throw std::runtime_error("Failed to save current state of the game!");
     }
+    outputFile << difficulty << std::endl;
     outputFile << currentBoardID << std::endl;
     for (int i = 0; i < 9; ++i) {
         for (int j = 0; j < 9; ++j) {

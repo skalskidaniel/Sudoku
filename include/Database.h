@@ -15,12 +15,19 @@ public:
     // best score so far
     int bestScore;
 
+    bool canBeResumed;
+
+    int difficulty;
 
     Database();
 
     void loadBoards();
 
     void loadSavedState();
+    // structure of currentState.txt:
+    // {int difficulty}
+    // {int boardID}
+    // {string currentBoardState}
 
     void addBoard(const std::string &initialState, const std::string &solutionState);
 

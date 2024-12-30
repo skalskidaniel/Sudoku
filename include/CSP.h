@@ -5,7 +5,6 @@
 #ifndef CSP_H
 #define CSP_H
 
-#endif //CSP_H
 
 #include <unordered_map>
 #include <unordered_set>
@@ -24,3 +23,5 @@ public:
     bool isComplete(const std::unordered_map<std::string, int>& assignment) const;
     CSP sudokuToCSP(const std::string& puzzle);
 };
+
+#endif //CSP_H

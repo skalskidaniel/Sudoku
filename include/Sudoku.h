@@ -22,6 +22,7 @@ public:
 
     Sudoku(const Mode &m, const Difficulty &d, const std::vector<Board> &savedBoards);
 
+
     void chooseBoard(const std::vector<Board> &savedBoards);
 
 };

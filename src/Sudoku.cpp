@@ -27,6 +27,7 @@ Sudoku::Sudoku(const Mode &m, const Difficulty &d, const std::vector<Board> &sav
     chooseBoard(savedBoards);
 }
 
+
 void Sudoku::chooseBoard(const std::vector<Board> &savedBoards) {
     std::random_device rd;
     std::mt19937 gen(rd());

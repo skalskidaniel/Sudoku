@@ -10,22 +10,27 @@
 //TODO fix ambigous CSP error
 
 Board Solver::solve(Board &b) {
-    CSP csp = CSP.sudokuToCSP(b.currentState);
-    Backtracker backtracker(csp);
-    auto solution = backtracker.solve();
-    for (const auto& [var, value] : solution) {
-        int row = (var[0] - '1') / 3;
-        int col = (var[1] - '1') / 3;
-        b.currentState[row][col] = value;
-    }
-    return b;
+    // CSP csp = CSP();
+    // CSP csp = CSP.sudokuToCSP(b.currentState);
+    // Backtracker backtracker(csp);
+    // auto solution = backtracker.solve();
+    // for (const auto& [var, value] : solution) {
+    //     int row = (var[0] - '1') / 3;
+    //     int col = (var[1] - '1') / 3;
+    //     b.currentState[row][col] = value;
+    // }
+    // return b;
+    std::cout << "Solver::solve to be implemented\n";
+    return Board();
 }
 
 bool Solver::isSolvable(const Board &b) {
-    CSP csp = CSP.sudokuToCSP(b.currentState);
-    Backtracker backtracker(csp);
-    std::unordered_map<std::string,int> solution = backtracker.solve();
-    return !solution.empty();
+    // CSP csp = CSP.sudokuToCSP(b.currentState);
+    // Backtracker backtracker(csp);
+    // std::unordered_map<std::string,int> solution = backtracker.solve();
+    // return !solution.empty();
+    std::cout << "Solver::isSolvable to be implemented\n";
+    return false;
 }
 
 std::pair<std::pair<int, int>, char> Solver::takeTurn() {

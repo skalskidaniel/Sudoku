@@ -4,16 +4,23 @@
 
 #ifndef HISTORY_H
 #define HISTORY_H
+
 #include "Board.h"
+#include <stack>
+#include <stdexcept>
 
 class History {
 public:
-    Board previousBoard;
+    std::stack<Board> previousBoards;
 
     History();
 
     // returns previous board, necessary for Sudoku class to update current board state
-    Board undo(Board &board);
+    Board undo(Board &newPreviousBoard);
+
+    bool canUndo();
+
+    void update(Board &board);
 };
 
 

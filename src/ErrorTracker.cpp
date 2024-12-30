@@ -22,4 +22,5 @@ bool ErrorTracker::validateMove(Board board, Board solution, char mode) {
         isGameOver = true;
         return false;
     }
+    return true;
 }
