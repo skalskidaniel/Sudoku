@@ -2,13 +2,7 @@
 // Created by Daniel Skalski on 28/12/2024.
 //
 
-#include <random>
-#include <vector>
-#include "Sudoku.h"
-#include <Solver.h>
-#include <User.h>
-#include <Database.h>
-
+#include <Sudoku.h>
 
 Sudoku::Sudoku(const Mode &m, const Difficulty &d)
     : player(nullptr), manager(0) {

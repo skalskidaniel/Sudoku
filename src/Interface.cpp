@@ -2,8 +2,7 @@
 // Created by Daniel Skalski on 28/12/2024.
 //
 
-#include "Interface.h"
-#include <iostream>
+#include <Interface.h>
 
 void Interface::displayMainMenu(const int &bestScore) {
     std::cout << "Welcome to Sudoku game\n";
@@ -101,7 +100,6 @@ int Interface::getUserInputInt(const std::vector<int> &availableValues) {
         } else if (std::find(availableValues.begin(), availableValues.end(), userChoice) == availableValues.end()) {
             displayMessage("Invalid input! Please choose valid option.", RED);
         } else {
-            // input is valid
             return userChoice;
         }
     }
@@ -120,7 +118,6 @@ char Interface::getUserInputChar(const std::vector<char> &availableValues) {
         } else if (std::find(availableValues.begin(), availableValues.end(), userChoice) == availableValues.end()) {
             displayMessage("Invalid input! Please choose valid option.", RED);
         } else {
-            // input is valid
             return userChoice;
         }
     }

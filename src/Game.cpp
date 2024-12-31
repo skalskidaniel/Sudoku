@@ -2,12 +2,7 @@
 // Created by Daniel Skalski on 28/12/2024.
 //
 
-#include "Game.h"
-#include <Solver.h>
-#include <User.h>
-#include <thread>
-#include <iostream>
-
+#include <Game.h>
 
 Game::Game(char mode, int difficulty)
     : sudoku(Sudoku(static_cast<Sudoku::Mode>(mode), static_cast<Sudoku::Difficulty>(difficulty))),
@@ -40,7 +35,6 @@ void Game::playSolverMode() {
     std::cout << "2. Complete all at once\n";
 
     int modeChoice = interface.getUserInputInt({1, 2});
-    // 1. Step by step 2. all at once
     switch (modeChoice) {
         case 1: {
             while (!sudoku.board.isSolved()) {
@@ -67,7 +61,6 @@ void Game::playUserMode() {
         interface.displayInGameOptions(sudoku.manager.errorTracker.currentErrors, sudoku.manager.errorTracker.maxErrors);
 
         int userChoice = interface.getUserInputInt({1, 2, 3});
-        // 1. insert a digit 2. hint 3. quit and save
         switch (userChoice) {
             case 1: {
                 auto move = sudoku.player->takeTurn();
@@ -94,7 +87,6 @@ void Game::playUserMode() {
                 throw std::runtime_error("Unknown user choice in Game::playUserMode\n");
         }
     }
-    // sudoku is solved now
     interface.displayMessage("Congratulations! You have solved the board.", Interface::GREEN);
     if (db.updateBestScore(sudoku.manager.timer.getElapsedTime())) {
         interface.displayMessage("You have new best score!", Interface::GREEN);

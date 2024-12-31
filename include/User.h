@@ -6,6 +6,9 @@
 #define USER_H
 #include <string>
 #include <Player.h>
+#include <iostream>
+#include <algorithm>
+#include <Interface.h>
 
 
 class User : public Player{

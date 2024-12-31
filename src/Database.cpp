@@ -2,12 +2,7 @@
 // Created by Daniel Skalski on 27/12/2024.
 //
 
-#include "Database.h"
-#include <random>
-#include <chrono>
-#include <fstream>
-#include <sstream>
-#include <iostream>
+#include <Database.h>
 
 Database::Database() : savedBoards("../saves/boards.csv") {
     loadSavedState();
@@ -23,13 +18,11 @@ void Database::loadChosenBoard(const int &boardID) {
         throw std::runtime_error("Could not open boards.csv");
     }
 
-    // Move to the specific line
     savedBoards.seekg(std::ios::beg);
     for (int i = 0; i < boardID; ++i) {
         savedBoards.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     }
 
-    // Read the specific line
     std::string line;
     std::getline(savedBoards, line);
 
@@ -60,7 +53,6 @@ void Database::loadSavedState() {
         currentBoard.updateCurrentState(line);
         canBeResumed = true;
     } else {
-        // there is no saved state in file
         currentBoard = Board();
         canBeResumed = false;
     }
@@ -73,7 +65,6 @@ void Database::loadSavedState() {
     if (bestScoreFile.peek() != std::ifstream::traits_type::eof()) {
         bestScoreFile >> bestScore;
     } else {
-        // there is no best score in file
         bestScore = 0;
     }
     bestScoreFile.close();
@@ -85,7 +76,6 @@ void Database::loadSavedState() {
     if (currentErrorsFile.peek() != std::ifstream::traits_type::eof()) {
         bestScoreFile >> currentErrors;
     } else {
-        // there is no current errors in file
         currentErrors = 0;
     }
     currentErrorsFile.close();

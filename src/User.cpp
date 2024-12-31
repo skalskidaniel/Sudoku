@@ -2,10 +2,7 @@
 // Created by Daniel Skalski on 28/12/2024.
 //
 
-#include <Interface.h>
 #include <User.h>
-#include <iostream>
-#include <algorithm>
 
 std::pair<std::pair<int, int>, char> User::takeTurn() {
     Interface& interface = Interface::getInstance();

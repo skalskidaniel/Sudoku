@@ -4,7 +4,7 @@
 
 #ifndef HINTER_H
 #define HINTER_H
-#include "Board.h"
+#include <Board.h>
 
 
 class Hinter {

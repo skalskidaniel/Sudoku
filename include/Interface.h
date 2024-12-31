@@ -6,8 +6,7 @@
 #define INTERFACE_H
 #include <Board.h>
 #include <string>
-
-
+#include <iostream>
 
 class Interface {
 public:

@@ -2,7 +2,7 @@
 // Created by Wiktor on 27/12/2024.
 //
 
-#include "Hinter.h"
+#include <Hinter.h>
 
 void Hinter::provideHint(Board &currentBoard) {
     for (int i = 0; i < 9; i++) {

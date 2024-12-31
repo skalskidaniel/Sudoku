@@ -11,7 +11,7 @@ private:
 
     bool isRunning;
 
-    int pausedDuration; // in seconds
+    int pausedDuration;
 
 public:
     Timer();

@@ -7,12 +7,17 @@
 #include <vector>
 #include <Board.h>
 #include <fstream>
+#include <random>
+#include <chrono>
+#include <fstream>
+#include <sstream>
+#include <iostream>
 
 class Database {
 public:
     std::ifstream savedBoards;
     const int totalBoards = 14104;
-    Board currentBoard; // storing current state of a game in case we want stop for a while and resume later
+    Board currentBoard;
     int currentBoardID;
     int bestScore;
     int currentErrors;
@@ -22,14 +27,10 @@ public:
     static Database& getInstance();
 
     void loadSavedState();
-    // structure of currentState.txt:
-    // {int difficulty}
-    // {int boardID}
-    // {string currentBoardState}
 
     void saveCurrentState(const Board &b, const int &currentBoardID, const int &difficulty, const int &currentErrors);
     void clearCurrentState();
-    bool updateBestScore(const int &score); // returns true if there is a new best score
+    bool updateBestScore(const int &score);
     void loadChosenBoard(const int &boardID);
 
 private:

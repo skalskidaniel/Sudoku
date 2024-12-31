@@ -3,28 +3,22 @@
 //
 
 #include <Solver.h>
-#include <iostream>
-
-//TODO debug solver class to work with the rest of the project
 
 bool Solver::isTurnValid(Board &b, int &row, int &col, int &digit) {
     char num = '0' + digit;
 
-    // Check row
     for (int x = 0; x < 9; x++) {
         if (b.currentState[row][x] == num) {
             return false;
         }
     }
 
-    // Check column
     for (int x = 0; x < 9; x++) {
         if (b.currentState[x][col] == num) {
             return false;
         }
     }
 
-    // Check 3x3 box
     int startRow = row - row % 3;
     int startCol = col - col % 3;
     for (int i = 0; i < 3; i++) {
@@ -43,7 +37,6 @@ std::pair<bool, Board> Solver::solve(Board &b) {
     int row = -1, col = -1;
     bool isEmpty = false;
 
-    // Find empty cell
     for (int i = 0; i < 9; i++) {
         for (int j = 0; j < 9; j++) {
             if (b.currentState[i][j] == '0') {
@@ -56,10 +49,8 @@ std::pair<bool, Board> Solver::solve(Board &b) {
         if (isEmpty) break;
     }
 
-    // No empty cell means puzzle solved
     if (!isEmpty) return {true, b};
 
-    // Try digits 1-9
     for (int num = 1; num <= 9; num++) {
         if (isTurnValid(b, row, col, num)) {
             b.currentState[row][col] = '0' + num;

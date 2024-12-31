@@ -2,8 +2,7 @@
 // Created by Daniel Skalski on 26/12/2024.
 //
 
-#include <string>
-#include "Board.h"
+#include <Board.h>
 
 Board::Board() {
     for (int i = 0; i < 9; ++i) {
@@ -16,7 +15,6 @@ Board::Board() {
 }
 
 Board::Board(const std::string &original, const std::string &solved) {
-    originalString = original;
      for (int i = 0; i < 9; ++i) {
          for (int j = 0; j < 9; ++j) {
              initialState[i][j] = original[9 * i + j];

@@ -6,7 +6,10 @@
 #define GAME_H
 #include <Sudoku.h>
 #include <Interface.h>
-
+#include <Solver.h>
+#include <User.h>
+#include <thread>
+#include <iostream>
 
 class Game {
 public:

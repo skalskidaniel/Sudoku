@@ -6,6 +6,7 @@
 #define SOLVER_H
 #include <Board.h>
 #include <Player.h>
+#include <iostream>
 
 class Solver : public Player {
 public:
@@ -13,10 +14,8 @@ public:
 
     std::pair<std::pair<int, int>, char> takeTurn() override;
 
-    // makes user input board
     Board inputBoardToComplete();
 
-    // solve board given by the user
     std::pair<bool, Board> solve(Board &b);
 private:
     bool isTurnValid(Board &b, int &row, int &col, int &digit);

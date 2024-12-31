@@ -5,9 +5,13 @@
 #ifndef SUDOKU_H
 #define SUDOKU_H
 #include <Board.h>
-#include <Database.h>
 #include <Player.h>
 #include <Manager.h>
+#include <Solver.h>
+#include <User.h>
+#include <Database.h>
+#include <random>
+#include <vector>
 
 class Sudoku {
 public:
