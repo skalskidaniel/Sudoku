@@ -9,19 +9,17 @@
 
 class Solver : public Player {
 public:
-    Board solvedBoard = Board();
-    bool is_solved = false;
+    Board solvedBoard;
 
     std::pair<std::pair<int, int>, char> takeTurn() override;
 
     // makes user input board
     Board inputBoardToComplete();
 
-    // check if board given by the user is solvable
-    bool isSolvable(const Board &b);
-
     // solve board given by the user
-    Board solve(Board &b);
+    std::pair<bool, Board> solve(Board &b);
+private:
+    bool isTurnValid(Board &b, int &row, int &col, int &digit);
 };
 
 

@@ -17,8 +17,6 @@ public:
 
     void start();
 
-    void saveProgress();
-
     void playUserMode();
 
     void playSolverMode();

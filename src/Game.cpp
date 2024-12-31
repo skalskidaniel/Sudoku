@@ -27,10 +27,14 @@ void Game::start() {
 void Game::playSolverMode() {
     interface.displayInputAndSolveInfo();
     Board givenBoard = dynamic_cast<Solver*>(sudoku.player.get())->inputBoardToComplete();
-    if (!dynamic_cast<Solver*>(sudoku.player.get())->isSolvable(givenBoard)) {
-        std::cout << "The board is not solvable.\n";
+    auto solution = dynamic_cast<Solver*>(sudoku.player.get())->solve(givenBoard);
+    if (!solution.first) {
+        interface.displayMessage("The board is not solvable\n", Interface::RED);
         return;
     }
+    sudoku.board = solution.second;
+    dynamic_cast<Solver*>(sudoku.player.get())->solvedBoard = solution.second;
+
     std::cout << "\nChoose an option:\n";
     std::cout << "1. Complete step by step\n";
     std::cout << "2. Complete all at once\n";
@@ -39,15 +43,15 @@ void Game::playSolverMode() {
     // 1. Step by step 2. all at once
     switch (modeChoice) {
         case 1: {
-            while (!dynamic_cast<Solver*>(sudoku.player.get())->is_solved) {
+            while (!sudoku.board.isSolved()) {
                 auto move = sudoku.player->takeTurn();
                 sudoku.board.currentState[move.first.first][move.first.second] = move.second;
                 interface.displayBoard(sudoku.board);
+                std::cout << std::endl;
                 std::this_thread::sleep_for(std::chrono::seconds(1));
             }
         } break;
         case 2: {
-            sudoku.board = dynamic_cast<Solver*>(sudoku.player.get())->solve(givenBoard);
             interface.displayBoard(sudoku.board);
         } break;
         default: {

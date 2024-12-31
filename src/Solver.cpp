@@ -9,42 +9,78 @@
 
 //TODO debug solver class to work with the rest of the project
 
-Board Solver::solve(Board &b) {
-    CSP csp = CSP();
-    csp = csp.sudokuToCSP(b.originalString);
-    Backtracker backtracker(csp);
-    auto solution = backtracker.solve();
-    for (const auto& [var, value] : solution) {
-        int row = (var[0] - '1') / 3;
-        int col = (var[1] - '1') / 3;
-        b.solvedState[row][col] = value;
+bool Solver::isTurnValid(Board &b, int &row, int &col, int &digit) {
+    char num = '0' + digit;
+
+    // Check row
+    for (int x = 0; x < 9; x++) {
+        if (b.currentState[row][x] == num) {
+            return false;
+        }
     }
-    return b;
+
+    // Check column
+    for (int x = 0; x < 9; x++) {
+        if (b.currentState[x][col] == num) {
+            return false;
+        }
+    }
+
+    // Check 3x3 box
+    int startRow = row - row % 3;
+    int startCol = col - col % 3;
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            if (b.currentState[i + startRow][j + startCol] == num) {
+                return false;
+            }
+        }
+    }
+
+    return true;
 }
 
-bool Solver::isSolvable(const Board &b) {
-    // TODO zwraca zawsze false
-    CSP csp = CSP();
-    csp = csp.sudokuToCSP(b.originalString);
-    Backtracker backtracker(csp);
-    std::unordered_map<std::string,int> solution = backtracker.solve();
-    return !solution.empty();
+
+std::pair<bool, Board> Solver::solve(Board &b) {
+    int row = -1, col = -1;
+    bool isEmpty = false;
+
+    // Find empty cell
+    for (int i = 0; i < 9; i++) {
+        for (int j = 0; j < 9; j++) {
+            if (b.solvedState[i][j] == '0') {
+                row = i;
+                col = j;
+                isEmpty = true;
+                break;
+            }
+        }
+        if (isEmpty) break;
+    }
+
+    // No empty cell means puzzle solved
+    if (!isEmpty) return {true, b};
+
+    // Try digits 1-9
+    for (int num = 1; num <= 9; num++) {
+        if (isTurnValid(b, row, col, num)) {
+            b.solvedState[row][col] = '0' + num;
+            auto result = solve(b);
+            if (result.first) return result;
+            b.solvedState[row][col] = '0';
+        }
+    }
+
+    return {false, b};
 }
 
 std::pair<std::pair<int, int>, char> Solver::takeTurn() {
-    Board b = inputBoardToComplete();
-    Board toSolve = b;
-    if (!isSolvable(toSolve)) {
-        return {{-1, -1}, '0'};
-    }
-    if(!is_solved){
-        solvedBoard = solve(toSolve);
-        is_solved = true;
-    }
     for (int i = 0; i < 9; ++i) {
         for (int j = 0; j < 9; ++j) {
-            if (b.currentState[i][j] == '0') {
-                return {{i, j}, solvedBoard.currentState[i][j]};
+            if (solvedBoard.currentState[i][j] == '0') {
+                char digit = solvedBoard.solvedState[i][j];
+                solvedBoard.currentState[i][j] = digit;
+                return {{i, j}, digit};
             }
         }
     }
@@ -56,7 +92,7 @@ Board Solver::inputBoardToComplete() {
     for (int i = 0; i < 9; ++i) {
         std::string row;
         while (true) {
-            std::cout << "Row " << i << ": ";
+            std::cout << "Row " << i + 1 << ": ";
             std::cin >> row;
             if (row.length() != 9) {
                 std::cout << "Error: Each row must be exactly 9 characters long.\n";
@@ -73,7 +109,9 @@ Board Solver::inputBoardToComplete() {
             if (valid) break;
         }
         for (int j = 0; j < 9; ++j) {
+            b.initialState[i][j] = row[j];
             b.currentState[i][j] = row[j];
+            b.solvedState[i][j] = row[j];
         }
     }
 

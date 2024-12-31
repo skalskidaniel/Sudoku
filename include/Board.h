@@ -8,10 +8,8 @@
 
 
 class Board {
-private:
-    char initialState[9][9];
-
 public:
+    char initialState[9][9];
     std::string originalString;
 
     char currentState[9][9];
