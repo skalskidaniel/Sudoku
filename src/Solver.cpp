@@ -46,7 +46,7 @@ std::pair<bool, Board> Solver::solve(Board &b) {
     // Find empty cell
     for (int i = 0; i < 9; i++) {
         for (int j = 0; j < 9; j++) {
-            if (b.solvedState[i][j] == '0') {
+            if (b.currentState[i][j] == '0') {
                 row = i;
                 col = j;
                 isEmpty = true;
@@ -62,10 +62,10 @@ std::pair<bool, Board> Solver::solve(Board &b) {
     // Try digits 1-9
     for (int num = 1; num <= 9; num++) {
         if (isTurnValid(b, row, col, num)) {
-            b.solvedState[row][col] = '0' + num;
+            b.currentState[row][col] = '0' + num;
             auto result = solve(b);
             if (result.first) return result;
-            b.solvedState[row][col] = '0';
+            b.currentState[row][col] = '0';
         }
     }
 
@@ -76,8 +76,7 @@ std::pair<std::pair<int, int>, char> Solver::takeTurn() {
     for (int i = 0; i < 9; ++i) {
         for (int j = 0; j < 9; ++j) {
             if (solvedBoard.currentState[i][j] == '0') {
-                char digit = solvedBoard.solvedState[i][j];
-                solvedBoard.currentState[i][j] = digit;
+                char digit = solvedBoard.currentState[i][j];
                 return {{i, j}, digit};
             }
         }
