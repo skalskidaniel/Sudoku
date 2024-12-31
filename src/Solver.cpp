@@ -3,8 +3,6 @@
 //
 
 #include <Solver.h>
-#include <CSP.h>
-#include <Backtracker.h>
 #include <iostream>
 
 //TODO debug solver class to work with the rest of the project
