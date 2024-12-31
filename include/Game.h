@@ -6,15 +6,11 @@
 #define GAME_H
 #include <Sudoku.h>
 #include <Interface.h>
-#include <iostream>
 
 
 class Game {
 public:
-    Database database;
-
-    Interface interface;
-
+    Interface& interface;
     Sudoku sudoku;
 
     Game(char mode, int difficulty);

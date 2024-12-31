@@ -23,6 +23,7 @@ Board Solver::solve(Board &b) {
 }
 
 bool Solver::isSolvable(const Board &b) {
+    // TODO zwraca zawsze false
     CSP csp = CSP();
     csp = csp.sudokuToCSP(b.originalString);
     Backtracker backtracker(csp);

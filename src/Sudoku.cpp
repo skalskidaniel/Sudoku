@@ -7,9 +7,10 @@
 #include "Sudoku.h"
 #include <Solver.h>
 #include <User.h>
+#include <Database.h>
 
 
-Sudoku::Sudoku(const Mode &m, const Difficulty &d, const std::vector<Board> &savedBoards)
+Sudoku::Sudoku(const Mode &m, const Difficulty &d)
     : player(nullptr), manager(0) {
     mode = m;
     if (m == USER) {
@@ -18,23 +19,35 @@ Sudoku::Sudoku(const Mode &m, const Difficulty &d, const std::vector<Board> &sav
         player = std::make_unique<Solver>();
     }
 
-    if (d == EASY) {
+    difficulty = d;
+    Database& db = Database::getInstance();
+    if (db.canBeResumed) {
+        db.loadSavedState();
+        board = db.currentBoard;
+        boardID = db.currentBoardID;
+        difficulty = static_cast<Difficulty>(db.difficulty);
+    } else {
+        chooseBoard();
+    }
+    if (difficulty == EASY) {
         manager = Manager(10);
-    } else if (d == MEDIUM) {
+    } else if (difficulty == MEDIUM) {
         manager = Manager(5);
     } else {
         manager = Manager(2);
     }
-    chooseBoard(savedBoards);
+    manager.errorTracker.currentErrors = db.currentErrors;
 }
 
 
-void Sudoku::chooseBoard(const std::vector<Board> &savedBoards) {
+void Sudoku::chooseBoard() {
+    Database& db = Database::getInstance();
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dis(0, savedBoards.size() - 1);
+    std::uniform_int_distribution<> dis(0, db.totalBoards - 1);
     int randomIndex = dis(gen);
-    board = savedBoards[randomIndex];
+    db.loadChosenBoard(randomIndex);
+    board = db.currentBoard;
     boardID = randomIndex;
 }
 

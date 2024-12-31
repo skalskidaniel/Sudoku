@@ -59,9 +59,10 @@ void Interface::displayBoard(Board &b) {
 void Interface::displayInGameOptions(const int &currentErrors, const int &maxErrors) {
     std::cout << "Errors made in current game (limit = " << maxErrors << "): " << currentErrors << std::endl;
     std::cout << "Choose an option:\n";
+    std::cout << "1. Insert a digit\n";
     std::cout << "2. Undo previous turn\n";
     std::cout << "3. Take a hint\n";
-    std::cout << "4. Quit a game\n";
+    std::cout << "4. Quit a game (progress will be saved)\n";
 }
 
 
@@ -70,10 +71,6 @@ void Interface::displayInputAndSolveInfo() {
     std::cout << "You will have to write each line one by one.\n";
     std::cout << "Places with missing digit mark as '0'.\n";
     std::cout << "Solver will check whether it is solvable, and solve if it is so.\n";
-}
-
-void Interface::sound() {
-    // TODO
 }
 
 void Interface::displayMessage(const std::string &message, const Colour &c) {
@@ -93,7 +90,7 @@ void Interface::displayMessage(const std::string &message, const Colour &c) {
 }
 
 
-int Interface::getUserInput(const std::vector<int> &availableValues) {
+int Interface::getUserInputInt(const std::vector<int> &availableValues) {
     int userChoice;
     while (true) {
         std::cin >> userChoice;
@@ -101,9 +98,28 @@ int Interface::getUserInput(const std::vector<int> &availableValues) {
         if (std::cin.fail()) {
             std::cin.clear();
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            std::cout << "Invalid input! Please choose valid option." << std::endl;
+            displayMessage("Invalid input! Please choose valid option.", RED);
         } else if (std::find(availableValues.begin(), availableValues.end(), userChoice) == availableValues.end()) {
-            std::cout << "Invalid input! Please choose valid option." << std::endl;
+            displayMessage("Invalid input! Please choose valid option.", RED);
+        } else {
+            // input is valid
+            return userChoice;
+        }
+    }
+}
+
+char Interface::getUserInputChar(const std::vector<char> &availableValues) {
+    char userChoice;
+    while (true) {
+        std::cin >> userChoice;
+        userChoice = std::toupper(userChoice);
+
+        if (std::cin.fail()) {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            displayMessage("Invalid input! Please choose valid option.", RED);
+        } else if (std::find(availableValues.begin(), availableValues.end(), userChoice) == availableValues.end()) {
+            displayMessage("Invalid input! Please choose valid option.", RED);
         } else {
             // input is valid
             return userChoice;

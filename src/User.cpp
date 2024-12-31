@@ -2,41 +2,24 @@
 // Created by Daniel Skalski on 28/12/2024.
 //
 
+#include <Interface.h>
 #include <User.h>
 #include <iostream>
+#include <algorithm>
 
 std::pair<std::pair<int, int>, char> User::takeTurn() {
-    char row, col, choice;
-    while (true) {
-        std::cout << "Select row where you want to insert a digit (A-I):\t";
-        std::cin >> row;
-        row = std::toupper(row);
-        if (row < 'A' || row > 'I') {
-            std::cout << "Invalid row. Please enter a letter between A and I.\n";
-            continue;
-        }
+    Interface& interface = Interface::getInstance();
+    std::vector<char> rows = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'};
+    std::vector<int> cols = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+    std::vector<char> digits = {'1', '2', '3', '4', '5', '6', '7', '8', '9'};
+    std::cout << "Select row where you want to insert a digit (A-I):\t";
+    char row = interface.getUserInputChar(rows);
+    std::cout << "Select colum where you want to insert a digit (1-9):\t";
+    int col = interface.getUserInputInt(cols);
+    std::cout << "Which digit would you like to insert? (1-9):\t";
+    char digit = interface.getUserInputChar(digits);
 
-        std::cout << "\nSelect column where you want to insert a digit (1-9):\t";
-        std::cin >> col;
-        if (col < '1' || col > '9') {
-            std::cout << "Invalid column. Please enter a number between 1 and 9.\n";
-            continue;
-        }
-
-        std::cout << "\nWhich digit would you like to insert? (1-9, type X to cancel):\t";
-        std::cin >> choice;
-        choice = std::toupper(choice);
-        if ((choice < '1' || choice > '9') && choice != 'X') {
-            std::cout << "Invalid choice. Please enter a number between 1 and 9, or X to cancel.\n";
-            continue;
-        }
-
-        if (choice == 'X') {
-            choice = -1;
-        }
-
-        break;
-    }
-
-    return {{row, col}, choice};
+    auto rowIt = std::find(rows.begin(), rows.end(), row);
+    auto colIt = std::find(cols.begin(), cols.end(), col);
+    return {{std::distance(rows.begin(), rowIt), std::distance(cols.begin(), colIt)}, digit};
 }

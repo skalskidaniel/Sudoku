@@ -25,9 +25,8 @@ public:
     void displayDifficultySelection();
     void displayInGameOptions(const int &currentErrors, const int &maxErrors);
     void displayInputAndSolveInfo();
-    int getUserInput(const std::vector<int> &availableValues);
-    // make chill sound during the game
-    void sound();
+    int getUserInputInt(const std::vector<int> &availableValues);
+    char getUserInputChar(const std::vector<char> &availableValues);
 
 private:
     Interface() = default;

@@ -50,8 +50,7 @@ Choose an option:
 ### insert a digit option
 Select row where you want to insert a digit: _
 Select colum where you want to insert a digit: _
-Which digit would you like to insert? (type X to cancel): _
-# if user choose X, then return to choose an option menu
+Which digit would you like to insert?: _
 
 ### in case max errors is over counted, show a message that game is over then:
 Do you want to see correctly solved board? [Y/N]

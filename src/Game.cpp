@@ -3,21 +3,20 @@
 //
 
 #include "Game.h"
-
 #include <Solver.h>
 #include <User.h>
 #include <thread>
+#include <iostream>
+
 
 Game::Game(char mode, int difficulty)
-    : database(Database()),
-    sudoku(Sudoku(static_cast<Sudoku::Mode>(mode), static_cast<Sudoku::Difficulty>(difficulty), database.savedBoards)),
-    interface(Interface()) {}
+    : sudoku(Sudoku(static_cast<Sudoku::Mode>(mode), static_cast<Sudoku::Difficulty>(difficulty))),
+      interface(Interface::getInstance()) {}
 
 void Game::start() {
-    if (sudoku.mode == 'U') {
-        sudoku.chooseBoard(database.savedBoards);
+    if (sudoku.mode == Sudoku::USER) {
         playUserMode();
-    } else if (sudoku.mode == 'S') {
+    } else if (sudoku.mode == Sudoku::SOLVER) {
         playSolverMode();
     } else {
         throw std::runtime_error("Unknown mode in sudoku!\n");
@@ -35,86 +34,75 @@ void Game::playSolverMode() {
     std::cout << "\nChoose an option:\n";
     std::cout << "1. Complete step by step\n";
     std::cout << "2. Complete all at once\n";
-    int modeChoice;
-    while (true) {
-        std::cin >> modeChoice;
 
-        if (std::cin.fail()) {
-            std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            std::cout << "Invalid input! Please choose valid option." << std::endl;
-        } else if (modeChoice != 1 && modeChoice != 2) {
-            std::cout << "Invalid input! Please choose valid option." << std::endl;
-        } else {
-            break;
-        }
-    }
-
-    if (modeChoice == 1) {
-        while (!dynamic_cast<Solver*>(sudoku.player.get())->is_solved) {
-            auto move = sudoku.player->takeTurn();
-            sudoku.board.currentState[move.first.first][move.first.second] = move.second;
+    int modeChoice = interface.getUserInputInt({1, 2});
+    // 1. Step by step 2. all at once
+    switch (modeChoice) {
+        case 1: {
+            while (!dynamic_cast<Solver*>(sudoku.player.get())->is_solved) {
+                auto move = sudoku.player->takeTurn();
+                sudoku.board.currentState[move.first.first][move.first.second] = move.second;
+                interface.displayBoard(sudoku.board);
+                std::this_thread::sleep_for(std::chrono::seconds(1));
+            }
+        } break;
+        case 2: {
+            sudoku.board = dynamic_cast<Solver*>(sudoku.player.get())->solve(givenBoard);
             interface.displayBoard(sudoku.board);
-            std::this_thread::sleep_for(std::chrono::seconds(1));
+        } break;
+        default: {
+            throw std::runtime_error("Unknown solver type!\n");
         }
-    } else if (modeChoice == 2) {
-        sudoku.board = dynamic_cast<Solver*>(sudoku.player.get())->solve(givenBoard);
-        interface.displayBoard(sudoku.board);
-    } else {
-        throw std::runtime_error("Unknown solver type!\n");
     }
 }
 
 void Game::playUserMode() {
+    Database& db = Database::getInstance();
     while (!sudoku.board.isSolved()) {
         interface.displayBoard(sudoku.board);
         interface.displayInGameOptions(sudoku.manager.errorTracker.currentErrors, sudoku.manager.errorTracker.maxErrors);
 
-        int userChoice;
+        int userChoice = interface.getUserInputInt({1, 2, 3, 4});
+        // 1. insert a digit 2. undo 3. hint 4. quit and save
+        switch (userChoice) {
+            case 1: {
+                auto move = sudoku.player->takeTurn();
+                if (sudoku.manager.errorTracker.validateMove(sudoku.board, move)) {
+                    sudoku.board.currentState[move.first.first][move.first.second] = move.second;
+                    sudoku.manager.history.update(sudoku.board);
+                } else {
+                    interface.displayMessage("Invalid move!\n", Interface::RED);
+                }
+                if (sudoku.manager.errorTracker.currentErrors > sudoku.manager.errorTracker.maxErrors) {
+                    interface.displayMessage("Game over! Maximum errors exceeded", Interface::RED);
+                    return;
+                }
 
-        while (true) {
-            std::cin >> userChoice;
-
-            if (std::cin.fail()) {
-                std::cin.clear();
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                std::cout << "Invalid input! Please choose a valid option." << std::endl;
-            } else if (userChoice < 1 || userChoice > 4) {
-                std::cout << "Invalid input! Please choose a valid option." << std::endl;
-            } else {
-                break;
+            } break;
+            case 2: {
+                if (sudoku.manager.history.canUndo()) {
+                    sudoku.board = sudoku.manager.history.undo(sudoku.board);
+                } else {
+                    interface.displayMessage("No more steps to undo\n", Interface::RED);
+                }
+            } break;
+            case 3: {
+                sudoku.manager.hinter.provideHint(sudoku.board);
+                sudoku.manager.history.update(sudoku.board);
+            } break;
+            case 4: {
+                db.saveCurrentState(sudoku.board, sudoku.boardID, sudoku.difficulty, sudoku.manager.errorTracker.currentErrors);
+                std::cout << "Hope to see you soon!\n";
+                exit(0);
             }
-        }
-
-        if (userChoice == 1) {
-            // insert a digit
-            auto move = sudoku.player->takeTurn();
-            // TODO change errorTracker.validateMove() to accept output from function above, and check if it is valid inside it. it should return true or false if it is valid and increment erorr count
-            if (sudoku.manager.errorTracker.validateMove( sudoku.board ,move)) {
-                sudoku.board.currentState[move.first.first][move.first.second] = move.second;
-            }
-            if (sudoku.manager.errorTracker.currentErrors > sudoku.manager.errorTracker.maxErrors) {
-                interface.displayMessage("Game over! Maximum errors exceeded", Interface::RED);
-                return;
-            }
-
-        } else if (userChoice == 2) {
-            // undo
-            sudoku.manager.history.undo(sudoku.board);
-        } else if (userChoice == 3) {
-            // hint
-            sudoku.manager.hinter.provideHint(sudoku.board);
-        } else if (userChoice == 4) {
-            // quit and save
-            database.saveCurrentState(sudoku.board, sudoku.boardID);
-            std::cout << "Hope to see you soon!\n";
-            exit(0);
-        } else {
-            throw std::runtime_error("Unknown user choice in Game::playUserMode\n");
+            default:
+                throw std::runtime_error("Unknown user choice in Game::playUserMode\n");
         }
     }
     // sudoku is solved now
     interface.displayMessage("Congratulations! You have solved the board.", Interface::GREEN);
-    // TODO update best score based on timer
-    return;
+    if (db.updateBestScore(sudoku.manager.timer.getElapsedTime())) {
+        interface.displayMessage("You have new best score!", Interface::GREEN);
+    }
+    db.clearCurrentState();
 }

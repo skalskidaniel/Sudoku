@@ -13,7 +13,9 @@ public:
     std::ifstream savedBoards;
     const int totalBoards = 14104;
     Board currentBoard; // storing current state of a game in case we want stop for a while and resume later
+    int currentBoardID;
     int bestScore;
+    int currentErrors;
     bool canBeResumed;
     int difficulty;
 
@@ -25,7 +27,8 @@ public:
     // {int boardID}
     // {string currentBoardState}
 
-    void saveCurrentState(const Board &b, const int &currentBoardID, const int &difficulty);
+    void saveCurrentState(const Board &b, const int &currentBoardID, const int &difficulty, const int &currentErrors);
+    void clearCurrentState();
     bool updateBestScore(const int &score); // returns true if there is a new best score
     void loadChosenBoard(const int &boardID);
 

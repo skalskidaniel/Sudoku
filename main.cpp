@@ -1,21 +1,21 @@
 #include <game.h>
 #include <iostream>
 
-bool newGameMenu(Database &startDatabase) {
+bool newGameMenu(Database &db) {
     // returns false if user wants to quit the game
     Interface& interface = Interface::getInstance();
-    interface.displayMainMenu(startDatabase.bestScore);
+    interface.displayMainMenu(db.bestScore);
     // 1. new game 2. quit
-    int choice = interface.getUserInput({1, 2});
+    int choice = interface.getUserInputInt({1, 2});
     switch (choice) {
         case 1: {
             interface.displayModeSelection();
             // 1. user mode 2. solver mode
-            int mode = interface.getUserInput({1, 2});
+            int mode = interface.getUserInputInt({1, 2});
             switch (mode) {
                 case 1: {
                     interface.displayDifficultySelection();
-                    int difficulty = interface.getUserInput({1, 2, 3});
+                    int difficulty = interface.getUserInputInt({1, 2, 3});
                     Game game('U', difficulty);
                     game.start();
                     return true;
@@ -40,21 +40,20 @@ bool newGameMenu(Database &startDatabase) {
     }
 }
 
-bool resumeMenu(Database &startDatabase) {
+bool resumeMenu(Database &db) {
     // returns false if user wants to quit the game
     Interface& interface = Interface::getInstance();
     interface.displayResumeMenu();
     // 1. Resume 2. new game 3. quit
-    int choice = interface.getUserInput({1, 2, 3});
+    int choice = interface.getUserInputInt({1, 2, 3});
     switch (choice) {
         case 1: {
-            // TODO make sure it resumes the game
-            Game game('U', startDatabase.difficulty);
+            Game game('U', db.difficulty);
             game.start();
             return true;
         }
         case 2: {
-            return newGameMenu(startDatabase);
+            return newGameMenu(db);
         }
         case 3: {
             std::cout << "Hope to see you soon!\n";
@@ -68,17 +67,19 @@ bool resumeMenu(Database &startDatabase) {
 
 
 
-bool mainMenu(Database &startDatabase) {
+bool mainMenu(Database &db) {
     // returns false if user wants to quit the game
-    if (startDatabase.canBeResumed) {
-        return resumeMenu(startDatabase);
+    if (db.canBeResumed) {
+        return resumeMenu(db);
     } else {
-        return newGameMenu(startDatabase);
+        return newGameMenu(db);
     }
 }
 
 
 int main() {
-    Database& startDatabase = Database::getInstance();
-    while (mainMenu(startDatabase));
+    Database& db = Database::getInstance();
+    while (mainMenu(db)) {
+        db.loadSavedState();
+    }
 }

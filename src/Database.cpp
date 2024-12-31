@@ -52,6 +52,7 @@ void Database::loadSavedState() {
 
         int boardID;
         currentStateFile >> boardID;
+        currentBoardID = boardID;
         loadChosenBoard(boardID);
 
         std::string line;
@@ -63,8 +64,8 @@ void Database::loadSavedState() {
         currentBoard = Board();
         canBeResumed = false;
     }
-
     currentStateFile.close();
+
     std::ifstream bestScoreFile("../saves/bestScore.txt");
     if (!bestScoreFile.is_open()) {
         throw std::runtime_error("Failed to load saved best score!");
@@ -75,23 +76,44 @@ void Database::loadSavedState() {
         // there is no best score in file
         bestScore = 0;
     }
+    bestScoreFile.close();
+
+    std::ifstream currentErrorsFile("../saves/currentErrors.txt");
+    if (!currentErrorsFile.is_open()) {
+        throw std::runtime_error("Failed to load saved current errors!");
+    }
+    if (currentErrorsFile.peek() != std::ifstream::traits_type::eof()) {
+        bestScoreFile >> currentErrors;
+    } else {
+        // there is no current errors in file
+        currentErrors = 0;
+    }
+    currentErrorsFile.close();
 }
 
-void Database::saveCurrentState(const Board &b, const int &currentBoardID, const int &difficulty) {
+void Database::saveCurrentState(const Board &b, const int &currentBoardID, const int &difficulty, const int &currentErrors) {
     currentBoard = b;
     this->difficulty = difficulty;
-    std::ofstream outputFile("../saves/currentState.txt");
-    if (!outputFile.is_open()) {
+    std::ofstream currentStateFile("../saves/currentState.txt", std::ios::trunc);
+    if (!currentStateFile.is_open()) {
         throw std::runtime_error("Failed to save current state of the game!");
     }
-    outputFile << difficulty << std::endl;
-    outputFile << currentBoardID << std::endl;
+    currentStateFile << difficulty << std::endl;
+    currentStateFile << currentBoardID << std::endl;
     for (int i = 0; i < 9; ++i) {
         for (int j = 0; j < 9; ++j) {
-            outputFile << b.currentState[i][j];
+            currentStateFile << b.currentState[i][j];
         }
     }
-    outputFile.close();
+    currentStateFile.close();
+
+    std::ofstream currentErrorsFile("../saves/currentErrors.txt", std::ios::trunc);
+    if (!currentErrorsFile.is_open()) {
+        throw std::runtime_error("Failed to save current errors from the game!");
+    }
+    currentErrorsFile << currentErrors;
+    currentErrorsFile.close();
+    this->currentErrors = currentErrors;
 }
 
 bool Database::updateBestScore(const int &score) {
@@ -108,3 +130,11 @@ bool Database::updateBestScore(const int &score) {
     return false;
 }
 
+void Database::clearCurrentState() {
+    std::ofstream outputFile("../saves/currentState.txt", std::ios::trunc);
+    if (!outputFile.is_open()) {
+        throw std::runtime_error("Failed to clear current state of the game!");
+    }
+    outputFile.close();
+    currentBoard = Board();
+}

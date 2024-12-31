@@ -14,6 +14,7 @@ bool History::canUndo() {
 
 
 Board History::undo(Board &newPreviousBoard) {
+    // TODO chyba nie do konca dziala
     if (canUndo()) {
         auto prev = previousBoards.top();
         previousBoards.pop();

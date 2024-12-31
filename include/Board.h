@@ -19,7 +19,7 @@ public:
     char solvedState[9][9];
 
     // default constructor with null values
-    Board();
+    Board() = default;
 
     // constructor allows to convert pure string into Board object
     Board(const std::string &original, const std::string &solved);

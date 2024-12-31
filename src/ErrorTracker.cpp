@@ -11,13 +11,14 @@ ErrorTracker::ErrorTracker(int maxErrors) {
 }
 
 bool ErrorTracker::validateMove(Board board, std::pair<std::pair<int, int>, char> move) {
+    // TODO dodac sprawdzanie, czy aby na pewno user nie wybral juz wypelnionego pola, sprawdzic czy na pewno dobrze sprawdza poprawnosc
     bool is_valid = true;
     if(board.solvedState[move.first.first][move.first.second] != move.second) {
         ++currentErrors;
         is_valid = false;
     }
 
-    if (!is_valid && currentErrors >= maxErrors) {
+    if (!is_valid && currentErrors > maxErrors) {
         isGameOver = true;
         return false;
     }
