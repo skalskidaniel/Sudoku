@@ -3,41 +3,44 @@
 //
 
 #include "Database.h"
+#include <random>
+#include <chrono>
 #include <fstream>
 #include <sstream>
 #include <iostream>
 
-Database::Database(bool loadBoards) {
-    if (loadBoards) {
-        std::cout << "Loading...\n";
-        this->loadBoards();
-    }
+Database::Database() : savedBoards("../saves/boards.csv") {
     loadSavedState();
 }
 
-void Database::loadBoards() {
-    std::ifstream boardsFile("../saves/boards.csv");
-
-    if (!boardsFile.is_open()) {
-        throw std::runtime_error("Failed to load saved boards!");
-    }
-
-    std::string line;
-    while (std::getline(boardsFile, line)) {
-        std::stringstream ss(line);
-        std::string initialState, solvedState;
-
-        std::getline(ss, initialState, ';');
-        std::getline(ss, solvedState);
-
-        Board b(initialState, solvedState);
-
-        savedBoards.emplace_back(b);
-
-    }
-
-    boardsFile.close();
+Database& Database::getInstance() {
+    static Database instance;
+    return instance;
 }
+
+void Database::loadChosenBoard(const int &boardID) {
+    if (!savedBoards.is_open()) {
+        throw std::runtime_error("Could not open boards.csv");
+    }
+
+    // Move to the specific line
+    savedBoards.seekg(std::ios::beg);
+    for (int i = 0; i < boardID; ++i) {
+        savedBoards.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
+
+    // Read the specific line
+    std::string line;
+    std::getline(savedBoards, line);
+
+    std::istringstream ss(line);
+    std::string initialState, solutionState;
+    std::getline(ss, initialState, ';');
+    std::getline(ss, solutionState);
+
+    currentBoard = Board(initialState, solutionState);
+}
+
 
 void Database::loadSavedState() {
     std::ifstream currentStateFile("../saves/currentState.txt");
@@ -49,13 +52,14 @@ void Database::loadSavedState() {
 
         int boardID;
         currentStateFile >> boardID;
-        currentBoard = savedBoards.at(boardID);
+        loadChosenBoard(boardID);
 
         std::string line;
         currentStateFile >> line;
         currentBoard.updateCurrentState(line);
         canBeResumed = true;
     } else {
+        // there is no saved state in file
         currentBoard = Board();
         canBeResumed = false;
     }
@@ -65,24 +69,18 @@ void Database::loadSavedState() {
     if (!bestScoreFile.is_open()) {
         throw std::runtime_error("Failed to load saved best score!");
     }
-
     if (bestScoreFile.peek() != std::ifstream::traits_type::eof()) {
         bestScoreFile >> bestScore;
     } else {
+        // there is no best score in file
         bestScore = 0;
     }
 }
 
-
-void Database::addBoard(const std::string &initialState, const std::string &solutionState) {
-    // let the user to add a board to the database
-    Board b(initialState, solutionState);
-    savedBoards.emplace_back(b);
-}
-
-void Database::saveCurrentState(const Board &b, const int &currentBoardID) {
+void Database::saveCurrentState(const Board &b, const int &currentBoardID, const int &difficulty) {
     currentBoard = b;
-    std::ofstream outputFile("saves/currentState.txt");
+    this->difficulty = difficulty;
+    std::ofstream outputFile("../saves/currentState.txt");
     if (!outputFile.is_open()) {
         throw std::runtime_error("Failed to save current state of the game!");
     }
@@ -97,9 +95,10 @@ void Database::saveCurrentState(const Board &b, const int &currentBoardID) {
 }
 
 bool Database::updateBestScore(const int &score) {
+    // returns true if there is new best score
     if (score > bestScore) {
         bestScore = score;
-        std::ofstream outputFile("saves/bestScore.txt", std::ios::trunc);
+        std::ofstream outputFile("../saves/bestScore.txt", std::ios::trunc);
         if (!outputFile.is_open()) {
             throw std::runtime_error("Failed to save best score to a file!");
         }

@@ -6,22 +6,18 @@
 #define DATABASE_H
 #include <vector>
 #include <Board.h>
+#include <fstream>
 
 class Database {
 public:
-    std::vector<Board> savedBoards;
-    // storing current state of a game in case we want stop for a while and resume later
-    Board currentBoard;
-    // best score so far
+    std::ifstream savedBoards;
+    const int totalBoards = 14104;
+    Board currentBoard; // storing current state of a game in case we want stop for a while and resume later
     int bestScore;
-
     bool canBeResumed;
-
     int difficulty;
 
-    Database(bool loadBoards = true);
-
-    void loadBoards();
+    static Database& getInstance();
 
     void loadSavedState();
     // structure of currentState.txt:
@@ -29,13 +25,16 @@ public:
     // {int boardID}
     // {string currentBoardState}
 
-    void addBoard(const std::string &initialState, const std::string &solutionState);
+    void saveCurrentState(const Board &b, const int &currentBoardID, const int &difficulty);
+    bool updateBestScore(const int &score); // returns true if there is a new best score
+    void loadChosenBoard(const int &boardID);
 
-    void saveCurrentState(const Board &b, const int &currentBoardID);
+private:
+    Database();
+    ~Database() = default;
 
-    // returns true if there is a new best score
-    bool updateBestScore(const int &score);
-
+    Database(const Database&) = delete;
+    Database& operator=(const Database&) = delete;
 };
 
 
