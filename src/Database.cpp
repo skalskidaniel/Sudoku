@@ -137,4 +137,5 @@ void Database::clearCurrentState() {
     }
     outputFile.close();
     currentBoard = Board();
+    canBeResumed = false;
 }

@@ -53,6 +53,7 @@ bool resumeMenu(Database &db) {
             return true;
         }
         case 2: {
+            db.clearCurrentState();
             return newGameMenu(db);
         }
         case 3: {

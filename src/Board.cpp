@@ -5,6 +5,16 @@
 #include <string>
 #include "Board.h"
 
+Board::Board() {
+    for (int i = 0; i < 9; ++i) {
+        for (int j = 0; j < 9; ++j) {
+            initialState[i][j] = '0';
+            solvedState[i][j] = '0';
+            currentState[i][j] = '0';
+        }
+    }
+}
+
 Board::Board(const std::string &original, const std::string &solved) {
     originalString = original;
      for (int i = 0; i < 9; ++i) {
