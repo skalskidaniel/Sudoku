@@ -2,15 +2,12 @@
 #include <iostream>
 
 bool newGameMenu(Database &db) {
-    // returns false if user wants to quit the game
     Interface& interface = Interface::getInstance();
     interface.displayMainMenu(db.bestScore);
-    // 1. new game 2. quit
     int choice = interface.getUserInputInt({1, 2});
     switch (choice) {
         case 1: {
             interface.displayModeSelection();
-            // 1. user mode 2. solver mode
             int mode = interface.getUserInputInt({1, 2});
             switch (mode) {
                 case 1: {
@@ -41,10 +38,8 @@ bool newGameMenu(Database &db) {
 }
 
 bool resumeMenu(Database &db) {
-    // returns false if user wants to quit the game
     Interface& interface = Interface::getInstance();
     interface.displayResumeMenu();
-    // 1. Resume 2. new game 3. quit
     int choice = interface.getUserInputInt({1, 2, 3});
     switch (choice) {
         case 1: {
@@ -69,7 +64,6 @@ bool resumeMenu(Database &db) {
 
 
 bool mainMenu(Database &db) {
-    // returns false if user wants to quit the game
     if (db.canBeResumed) {
         return resumeMenu(db);
     } else {

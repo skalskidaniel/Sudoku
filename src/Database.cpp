@@ -65,7 +65,7 @@ void Database::loadSavedState() {
     if (bestScoreFile.peek() != std::ifstream::traits_type::eof()) {
         bestScoreFile >> bestScore;
     } else {
-        bestScore = 0;
+        bestScore = std::numeric_limits<int>::max();
     }
     bestScoreFile.close();
 

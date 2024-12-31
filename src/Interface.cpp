@@ -6,7 +6,9 @@
 
 void Interface::displayMainMenu(const int &bestScore) {
     std::cout << "Welcome to Sudoku game\n";
-    std::cout << "Your best score so far: " << bestScore << std::endl;
+    if (bestScore != std::numeric_limits<int>::max()) {
+        std::cout << "Your best score so far: " << bestScore << std::endl;
+    }
     std::cout << "Choose an option:\n";
     std::cout << "1. Start a game\n";
     std::cout << "2. Quit\n";
