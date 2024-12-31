@@ -11,25 +11,29 @@
 
 class Interface {
 public:
-    void displayBoard( Board &b);
+    static Interface& getInstance() {
+        static Interface instance;
+        return instance;
+    }
 
+    void displayBoard(Board &b);
     enum Colour {GREEN, YELLOW, RED};
     void displayMessage(const std::string &message, const Colour &c);
-
     void displayMainMenu(const int &bestScore);
-
     void displayResumeMenu();
-
     void displayModeSelection();
-
     void displayDifficultySelection();
-
-    void displayInGameOptions(const int &currentErorrs, const int &maxErrors);
-
+    void displayInGameOptions(const int &currentErrors, const int &maxErrors);
     void displayInputAndSolveInfo();
-
+    int getUserInput(const std::vector<int> &availableValues);
     // make chill sound during the game
     void sound();
+
+private:
+    Interface() = default;
+    ~Interface() = default;
+    Interface(const Interface&) = delete;
+    Interface& operator=(const Interface&) = delete;
 };
 
 

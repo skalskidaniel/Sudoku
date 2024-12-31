@@ -56,8 +56,8 @@ void Interface::displayBoard(Board &b) {
     }
 }
 
-void Interface::displayInGameOptions(const int &currentErorrs, const int &maxErrors) {
-    std::cout << "Errors made in current game (limit = " << maxErrors << "): " << currentErorrs << std::endl;
+void Interface::displayInGameOptions(const int &currentErrors, const int &maxErrors) {
+    std::cout << "Errors made in current game (limit = " << maxErrors << "): " << currentErrors << std::endl;
     std::cout << "Choose an option:\n";
     std::cout << "2. Undo previous turn\n";
     std::cout << "3. Take a hint\n";
@@ -93,3 +93,20 @@ void Interface::displayMessage(const std::string &message, const Colour &c) {
 }
 
 
+int Interface::getUserInput(const std::vector<int> &availableValues) {
+    int userChoice;
+    while (true) {
+        std::cin >> userChoice;
+
+        if (std::cin.fail()) {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout << "Invalid input! Please choose valid option." << std::endl;
+        } else if (std::find(availableValues.begin(), availableValues.end(), userChoice) == availableValues.end()) {
+            std::cout << "Invalid input! Please choose valid option." << std::endl;
+        } else {
+            // input is valid
+            return userChoice;
+        }
+    }
+}
