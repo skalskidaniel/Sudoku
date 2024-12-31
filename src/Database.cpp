@@ -118,7 +118,7 @@ void Database::saveCurrentState(const Board &b, const int &currentBoardID, const
 
 bool Database::updateBestScore(const int &score) {
     // returns true if there is new best score
-    if (score > bestScore) {
+    if (score < bestScore) {
         bestScore = score;
         std::ofstream outputFile("../saves/bestScore.txt", std::ios::trunc);
         if (!outputFile.is_open()) {
