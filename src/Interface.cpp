@@ -60,9 +60,8 @@ void Interface::displayInGameOptions(const int &currentErrors, const int &maxErr
     std::cout << "Errors made in current game (limit = " << maxErrors << "): " << currentErrors << std::endl;
     std::cout << "Choose an option:\n";
     std::cout << "1. Insert a digit\n";
-    std::cout << "2. Undo previous turn\n";
-    std::cout << "3. Take a hint\n";
-    std::cout << "4. Quit a game (progress will be saved)\n";
+    std::cout << "2. Take a hint\n";
+    std::cout << "3. Quit a game (progress will be saved)\n";
 }
 
 

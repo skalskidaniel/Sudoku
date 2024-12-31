@@ -53,11 +53,6 @@ std::pair<std::pair<int, int>, char> Solver::takeTurn() {
 Board Solver::inputBoardToComplete() {
     Board b;
 
-    std::cout << "Please input your own sudoku board.\n";
-    std::cout << "You will have to write each line one by one.\n";
-    std::cout << "Places with missing digit mark as '0'.\n";
-    std::cout << "Solver will check whether it is solvable, and solve if it is so.\n";
-
     for (int i = 0; i < 9; ++i) {
         std::string row;
         while (true) {

@@ -62,14 +62,13 @@ void Game::playUserMode() {
         interface.displayBoard(sudoku.board);
         interface.displayInGameOptions(sudoku.manager.errorTracker.currentErrors, sudoku.manager.errorTracker.maxErrors);
 
-        int userChoice = interface.getUserInputInt({1, 2, 3, 4});
-        // 1. insert a digit 2. undo 3. hint 4. quit and save
+        int userChoice = interface.getUserInputInt({1, 2, 3});
+        // 1. insert a digit 2. hint 3. quit and save
         switch (userChoice) {
             case 1: {
                 auto move = sudoku.player->takeTurn();
                 if (sudoku.manager.errorTracker.validateMove(sudoku.board, move)) {
                     sudoku.board.currentState[move.first.first][move.first.second] = move.second;
-                    sudoku.manager.history.update(sudoku.board);
                 } else {
                     interface.displayMessage("Invalid move!\n", Interface::RED);
                 }
@@ -80,17 +79,9 @@ void Game::playUserMode() {
 
             } break;
             case 2: {
-                if (sudoku.manager.history.canUndo()) {
-                    sudoku.board = sudoku.manager.history.undo(sudoku.board);
-                } else {
-                    interface.displayMessage("No more steps to undo\n", Interface::RED);
-                }
+                sudoku.manager.hinter.provideHint(sudoku.board);
             } break;
             case 3: {
-                sudoku.manager.hinter.provideHint(sudoku.board);
-                sudoku.manager.history.update(sudoku.board);
-            } break;
-            case 4: {
                 db.saveCurrentState(sudoku.board, sudoku.boardID, sudoku.difficulty, sudoku.manager.errorTracker.currentErrors);
                 std::cout << "Hope to see you soon!\n";
                 exit(0);

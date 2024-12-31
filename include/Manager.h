@@ -4,20 +4,15 @@
 
 #ifndef MANAGER_H
 #define MANAGER_H
-#include "ErrorTracker.h"
-#include "Timer.h"
-#include "History.h"
-#include "Hinter.h"
+#include <ErrorTracker.h>
+#include <Timer.h>
+#include <Hinter.h>
 
 
 class Manager {
 public:
     ErrorTracker errorTracker;
-
     Timer timer;
-
-    History history;
-
     Hinter hinter;
 
     Manager(int maxErrors);

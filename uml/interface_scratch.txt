@@ -43,7 +43,6 @@ I   _   _   _   _   _   _   _   _   _
 Errors made in current game (limit = _): _
 Choose an option:
 1. Insert a digit
-2. Undo previous turn
 3. Take a hint # inserted hint digit should be yellow
 4. Quit a game (your status will be saved for later)
 
